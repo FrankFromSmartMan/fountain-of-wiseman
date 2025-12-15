@@ -15,7 +15,7 @@ Key mechanics:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ETC Arrangement Tracker</title>
+    <title>Fountain of the Wiseman - GPQ Tool</title>
     <link rel="stylesheet" href="styles.css">
     <script defer src="script.js"></script>
 </head>
@@ -267,10 +267,9 @@ Key mechanics:
     }
     
     .preview-image {
-        width: 40px;
-        height: 40px;
+        width: 60px;
+        height: 60px;
         object-fit: contain;
-        border: 3px solid #A0522D;
         border-radius: 8px;
         padding: 5px;
         background: white;
@@ -341,6 +340,12 @@ Key mechanics:
     
     .form-group {
         margin-bottom: 20px;
+    }
+    
+    .button-container {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
     }
     
     .input-hint {
@@ -633,8 +638,8 @@ Key mechanics:
         }
         
         .preview-image, .preview-placeholder {
-            width: 32px;
-            height: 32px;
+            width: 48px;
+            height: 48px;
         }
         
         /* Hide desktop table on mobile */
@@ -672,6 +677,11 @@ Key mechanics:
         button {
             padding: 12px 20px;
             font-size: 1rem;
+        }
+        
+        .button-container {
+            flex-direction: column;
+            gap: 10px;
         }
     }
     
@@ -717,8 +727,8 @@ Key mechanics:
             <form id="attemptsForm">
                 <div class="form-group">
                     <label for="arrangement">Offering Arrangement (F=Food, M=Medal, S=Scroll, W=Wine):</label>
-                    <input type="text" id="arrangement" name="arrangement" maxlength="4" required pattern="[FMSW]{4}" 
-                           placeholder="FMSW" autocomplete="off">
+                    <input type="text" id="arrangement" name="arrangement" maxlength="4"    
+                           placeholder="FMSW" autocomplete="off" style="text-transform: uppercase;">
                     <div class="input-hint">Enter 4 letters for your statue arrangement (e.g., FMSW = Food-Medal-Scroll-Wine)</div>
                 </div>
                 
@@ -750,8 +760,10 @@ Key mechanics:
                     <div class="input-hint">How many offerings are completely wrong for this combination?</div>
                 </div>
                 
-                <button type="submit">Add Attempt</button>
-                <button type="button" id="resetButton" style="background: linear-gradient(135deg, #636363, #777777); margin-left: 10px;">Reset All Attempts</button>
+                <div class="button-container">
+                    <button type="submit">Add Attempt</button>
+                    <button type="button" id="resetButton" style="background: linear-gradient(135deg, #636363, #777777);">Reset All Attempts</button>
+                </div>
             </form>
         </section>
 
