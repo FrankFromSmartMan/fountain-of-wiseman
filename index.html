@@ -12,1112 +12,1385 @@ Key mechanics:
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Fountain of the Wiseman - GPQ Tool</title>
-    <link rel="stylesheet" href="styles.css">
-    <script defer src="script.js"></script>
-</head>
-<style>
+  </head>
+  <style>
     * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-    
+
     body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        margin: 0;
-        padding: 0;
-        background: linear-gradient(135deg, #8B7D6B 0%, #696969 100%);
-        min-height: 100vh;
-        color: #333;
-        line-height: 1.6;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #8b7d6b 0%, #696969 100%);
+      min-height: 100vh;
+      color: #333;
+      line-height: 1.6;
     }
-    
+
     header {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        color: #333;
-        padding: 20px 0;
-        text-align: center;
-        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-        margin-bottom: 30px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      color: #333;
+      padding: 20px 0;
+      text-align: center;
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
     }
-    
+
     main {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px 40px;
     }
-    
+
     h1 {
-        font-size: 2.5rem;
-        font-weight: 700;
-        margin-bottom: 10px;
-        background: linear-gradient(135deg, #8B4513, #A0522D);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #8b4513, #a0522d);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
-    
+
     h2 {
-        font-size: 1.8rem;
-        margin-bottom: 20px;
-        color: #444;
-        font-weight: 600;
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      color: #444;
+      font-weight: 600;
     }
-    
+
     p {
-        font-size: 1.1rem;
-        color: #666;
-        margin-bottom: 15px;
+      font-size: 1.1rem;
+      color: #666;
+      margin-bottom: 15px;
     }
-    
+
     section {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        border-radius: 15px;
-        padding: 25px;
-        margin-bottom: 25px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 25px;
+      margin-bottom: 25px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    
+
     section:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
     }
-    
+
     form {
-        margin-bottom: 0;
+      margin-bottom: 0;
     }
-    
+
     label {
-        display: block;
-        margin: 15px 0 8px 0;
-        font-weight: 600;
-        color: #555;
-        font-size: 1rem;
+      display: block;
+      margin: 15px 0 8px 0;
+      font-weight: 600;
+      color: #555;
+      font-size: 1rem;
     }
-    
-    input[type="text"], input[type="number"] {
-        width: 100%;
-        padding: 12px 16px;
-        border: 2px solid #e1e5e9;
-        border-radius: 8px;
-        font-size: 1rem;
-        transition: all 0.3s ease;
-        background: white;
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e1e5e9;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: white;
     }
-    
-    input[type="text"]:focus, input[type="number"]:focus {
-        outline: none;
-        border-color: #A0522D;
-        box-shadow: 0 0 0 3px rgba(160, 82, 45, 0.1);
-        transform: translateY(-1px);
+
+    input[type="text"]:focus,
+    input[type="number"]:focus {
+      outline: none;
+      border-color: #a0522d;
+      box-shadow: 0 0 0 3px rgba(160, 82, 45, 0.1);
+      transform: translateY(-1px);
     }
-    
+
     input[type="text"]::placeholder,
     input[type="number"]::placeholder {
-        color: #bbb;
-        opacity: 1;
+      color: #bbb;
+      opacity: 1;
     }
-    
+
     input[type="text"]::-webkit-input-placeholder,
     input[type="number"]::-webkit-input-placeholder {
-        color: #bbb;
-        opacity: 1;
+      color: #bbb;
+      opacity: 1;
     }
-    
+
     input[type="text"]::-moz-placeholder,
     input[type="number"]::-moz-placeholder {
-        color: #bbb;
-        opacity: 1;
+      color: #bbb;
+      opacity: 1;
     }
-    
+
     button {
-        padding: 12px 24px;
-        background: linear-gradient(135deg, #8B4513, #A0522D);
-        color: white;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 1rem;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        margin-top: 15px;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #8b4513, #a0522d);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      margin-top: 15px;
     }
-    
+
     button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(139, 69, 19, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(139, 69, 19, 0.3);
     }
-    
+
     button:active {
-        transform: translateY(0);
+      transform: translateY(0);
     }
-    
+
     table {
-        width: 100%;
-        border-collapse: collapse;
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        background: white;
+      width: 100%;
+      border-collapse: collapse;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      background: white;
     }
-    
-    th, td {
-        text-align: left;
-        padding: 15px 12px;
-        border-bottom: 1px solid #f0f0f0;
-    }
-    
-    th {
-        background: linear-gradient(135deg, #8B4513, #A0522D);
-        color: white;
-        font-weight: 600;
-        font-size: 1rem;
-    }
-    
+
+    th,
     td {
-        font-size: 0.95rem;
+      text-align: left;
+      padding: 15px 12px;
+      border-bottom: 1px solid #f0f0f0;
     }
-    
+
+    th {
+      background: linear-gradient(135deg, #8b4513, #a0522d);
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    td {
+      font-size: 0.95rem;
+    }
+
     tr:hover {
-        background-color: #F5F5F5;
-        transition: background-color 0.2s ease;
+      background-color: #f5f5f5;
+      transition: background-color 0.2s ease;
     }
-    
+
     .etc-legend {
-        display: flex;
-        justify-content: center;
-        gap: 30px;
-        margin: 30px 0;
-        padding: 25px;
-        background: rgba(255, 255, 255, 0.9);
-        border-radius: 15px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        flex-wrap: wrap;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin: 30px 0;
+      padding: 25px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      flex-wrap: wrap;
     }
-    
+
     .etc-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        padding: 15px;
-        border-radius: 10px;
-        transition: all 0.3s ease;
-        background: white;
-        border: 2px solid #f0f0f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 15px;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      background: white;
+      border: 2px solid #f0f0f0;
     }
-    
+
     .etc-item:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-        border-color: #A0522D;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      border-color: #a0522d;
     }
-    
+
     .etc-image {
-        width: 50px;
-        height: 50px;
-        object-fit: contain;
-        margin-bottom: 10px;
-        transition: transform 0.3s ease;
+      width: 50px;
+      height: 50px;
+      object-fit: contain;
+      margin-bottom: 10px;
+      transition: transform 0.3s ease;
     }
-    
+
     .etc-item:hover .etc-image {
-        transform: scale(1.1);
+      transform: scale(1.1);
     }
-    
+
     .etc-label {
-        font-weight: 600;
-        margin-bottom: 6px;
-        color: #444;
-        font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #444;
+      font-size: 1rem;
     }
-    
+
     .etc-letter {
-        background: linear-gradient(135deg, #8B4513, #A0522D);
-        color: white;
-        padding: 6px 12px;
-        border-radius: 20px;
-        font-size: 0.9rem;
-        font-weight: 600;
+      background: linear-gradient(135deg, #8b4513, #a0522d);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
     }
-    
+
     .arrangement-preview {
-        margin: 15px 0;
-        padding: 20px;
-        background: linear-gradient(135deg, #F5F5F5, #E8E8E8);
-        border-radius: 10px;
-        border: 2px solid #D3D3D3;
+      margin: 15px 0;
+      padding: 20px;
+      background: linear-gradient(135deg, #f5f5f5, #e8e8e8);
+      border-radius: 10px;
+      border: 2px solid #d3d3d3;
     }
-    
+
     .preview-images {
-        display: flex;
-        gap: 15px;
-        align-items: center;
-        justify-content: center;
-        margin-top: 15px;
-        flex-wrap: wrap;
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      justify-content: center;
+      margin-top: 15px;
+      flex-wrap: wrap;
     }
-    
+
     .preview-image {
-        width: 60px;
-        height: 60px;
-        object-fit: contain;
-        border-radius: 8px;
-        padding: 5px;
-        background: white;
-        transition: all 0.3s ease;
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      border-radius: 8px;
+      padding: 5px;
+      background: white;
+      transition: all 0.3s ease;
     }
-    
+
     .preview-image:hover {
-        transform: scale(1.1);
-        box-shadow: 0 4px 15px rgba(160, 82, 45, 0.3);
+      transform: scale(1.1);
+      box-shadow: 0 4px 15px rgba(160, 82, 45, 0.3);
     }
-    
+
     .preview-placeholder {
-        width: 40px;
-        height: 40px;
-        border: 3px dashed #ccc;
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1rem;
-        color: #999;
-        background: #f9f9f9;
-        font-weight: 600;
+      width: 40px;
+      height: 40px;
+      border: 3px dashed #ccc;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      color: #999;
+      background: #f9f9f9;
+      font-weight: 600;
     }
-    
+
     .group-photo {
-        width: 100%;
-        max-width: 500px;
-        height: auto;
-        display: block;
-        margin: 30px auto 40px auto;
-        border-radius: 15px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-        transition: transform 0.3s ease;
+      width: 100%;
+      max-width: 500px;
+      height: auto;
+      display: block;
+      margin: 30px auto 40px auto;
+      border-radius: 15px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
     }
-    
+
     .group-photo:hover {
-        transform: scale(1.02);
+      transform: scale(1.02);
     }
-    
+
     .help-text {
-        font-size: 0.9rem;
-        color: #888;
-        margin-top: 4px;
-        font-style: italic;
+      font-size: 0.9rem;
+      color: #888;
+      margin-top: 4px;
+      font-style: italic;
     }
-    
+
     .instruction-box {
-        background: linear-gradient(135deg, #F0E68C, #DDD0A0);
-        border: 2px solid #DAA520;
-        border-radius: 10px;
-        padding: 15px;
-        margin-bottom: 20px;
+      background: linear-gradient(135deg, #f0e68c, #ddd0a0);
+      border: 2px solid #daa520;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
     }
-    
+
     .instruction-box h3 {
-        margin: 0 0 10px 0;
-        color: #8B4513;
-        font-size: 1.1rem;
+      margin: 0 0 10px 0;
+      color: #8b4513;
+      font-size: 1.1rem;
     }
-    
+
     .instruction-box p {
-        margin: 0;
-        color: #666;
-        font-size: 0.95rem;
-        line-height: 1.4;
+      margin: 0;
+      color: #666;
+      font-size: 0.95rem;
+      line-height: 1.4;
     }
-    
+
     .form-group {
-        margin-bottom: 20px;
+      margin-bottom: 20px;
     }
-    
+
     .button-container {
-        display: flex;
-        gap: 10px;
-        margin-top: 15px;
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
     }
-    
+
     .input-hint {
-        font-size: 0.85rem;
-        color: #999;
-        margin-top: 5px;
-        display: flex;
-        align-items: center;
-        gap: 5px;
+      font-size: 0.85rem;
+      color: #999;
+      margin-top: 5px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
     }
-    
+
     .guard-statue {
-        width: 120px;
-        height: auto;
-        float: right;
-        margin: 0 0 20px 20px;
-        transition: transform 0.3s ease;
+      width: 120px;
+      height: auto;
+      float: right;
+      margin: 0 0 20px 20px;
+      transition: transform 0.3s ease;
+      clear: right;
+      position: relative;
+      z-index: 10;
     }
-    
+
     .guard-statue:hover {
-        transform: scale(1.05);
+      transform: scale(1.05);
     }
-    
-    @media (max-width: 768px) {
-        .guard-statue {
-            float: none;
-            display: block;
-            margin: 0 auto 20px;
-            width: 100px;
-        }
-    }
-    
-    .table-arrangement {
-        display: flex;
-        gap: 5px;
-        align-items: center;
-        justify-content: flex-start;
-        flex-wrap: wrap;
-    }
-    
-    .table-etc-image {
-        width: 24px;
-        height: 24px;
-        object-fit: contain;
-        border-radius: 4px;
-        transition: transform 0.2s ease;
-    }
-    
-    .table-etc-image:hover {
-        transform: scale(1.2);
-    }
-    
-    .suggestions-section {
-        margin-top: 25px;
-        padding: 25px;
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 15px;
-        border: 2px solid #D3D3D3;
-        backdrop-filter: blur(10px);
-    }
-    
-    .suggestion-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 15px;
-        margin: 10px 0;
-        background: white;
-        border-radius: 10px;
-        border: 2px solid #E8E8E8;
-        transition: all 0.3s ease;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
-    
-    .suggestion-item:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(139, 69, 19, 0.15);
-        border-color: #A0522D;
-    }
-    
-    .suggestion-arrangement {
-        display: flex;
-        gap: 8px;
-        align-items: center;
-        flex-wrap: wrap;
-    }
-    
-    .suggestion-image {
-        width: 30px;
-        height: 30px;
-        object-fit: contain;
-        border-radius: 6px;
-        transition: transform 0.2s ease;
-    }
-    
-    .suggestion-image:hover {
-        transform: scale(1.1);
-    }
-    
-    .suggestion-text {
-        margin-left: 15px;
-        font-size: 1rem;
-        color: #666;
-        font-weight: 500;
-    }
-    
-    .apply-suggestion {
-        padding: 8px 16px;
-        background: linear-gradient(135deg, #8B7D6B, #6B5B4F);
-        color: white;
-        border: none;
-        border-radius: 20px;
-        cursor: pointer;
-        font-size: 0.9rem;
-        font-weight: 600;
-        transition: all 0.3s ease;
+
+    @media (min-width: 769px) {
+      .guard-statue {
+        position: absolute;
+        right: 20px;
         margin: 0;
+        float: none;
+      }
+
+      .form-group {
+        margin-right: 140px;
+      }
+
+      .arrangement-preview {
+        margin-right: 140px;
+      }
+
+      .button-container {
+        margin-right: 140px;
+      }
     }
-    
+
+    @media (max-width: 768px) {
+      .guard-statue {
+        float: none;
+        display: block;
+        margin: 0 auto 20px;
+        width: 100px;
+        position: static;
+      }
+
+      .form-group {
+        margin-right: 0;
+      }
+
+      .arrangement-preview {
+        margin-right: 0;
+      }
+
+      .button-container {
+        margin-right: 0;
+      }
+    }
+
+    .table-arrangement {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .table-etc-image {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+      border-radius: 4px;
+      transition: transform 0.2s ease;
+    }
+
+    .table-etc-image:hover {
+      transform: scale(1.2);
+    }
+
+    .suggestions-section {
+      margin-top: 25px;
+      padding: 25px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 15px;
+      border: 2px solid #d3d3d3;
+      backdrop-filter: blur(10px);
+    }
+
+    .suggestion-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px;
+      margin: 10px 0;
+      background: white;
+      border-radius: 10px;
+      border: 2px solid #e8e8e8;
+      transition: all 0.3s ease;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .suggestion-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(139, 69, 19, 0.15);
+      border-color: #a0522d;
+    }
+
+    .suggestion-arrangement {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .suggestion-image {
+      width: 30px;
+      height: 30px;
+      object-fit: contain;
+      border-radius: 6px;
+      transition: transform 0.2s ease;
+    }
+
+    .suggestion-image:hover {
+      transform: scale(1.1);
+    }
+
+    .suggestion-text {
+      margin-left: 15px;
+      font-size: 1rem;
+      color: #666;
+      font-weight: 500;
+    }
+
+    .apply-suggestion {
+      padding: 8px 16px;
+      background: linear-gradient(135deg, #8b7d6b, #6b5b4f);
+      color: white;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      margin: 0;
+    }
+
     .apply-suggestion:hover {
-        background: linear-gradient(135deg, #6B5B4F, #5A4C42);
-        transform: translateY(-1px);
-        box-shadow: 0 4px 15px rgba(107, 91, 79, 0.3);
+      background: linear-gradient(135deg, #6b5b4f, #5a4c42);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(107, 91, 79, 0.3);
     }
-    
+
     footer {
-        background: rgba(255, 255, 255, 0.9);
-        color: #666;
-        text-align: center;
-        padding: 20px;
-        margin-top: 30px;
-        border-radius: 15px 15px 0 0;
-        backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.9);
+      color: #666;
+      text-align: center;
+      padding: 20px;
+      margin-top: 30px;
+      border-radius: 15px 15px 0 0;
+      backdrop-filter: blur(10px);
     }
-    
+
     /* Mobile Table Styles */
     .mobile-table {
-        display: none;
+      display: none;
     }
-    
+
     .attempt-card {
-        background: white;
-        border-radius: 10px;
-        padding: 15px;
-        margin-bottom: 15px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        border: 1px solid #e0e0e0;
+      background: white;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e0e0e0;
     }
-    
+
     .attempt-card-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 10px;
-        padding-bottom: 10px;
-        border-bottom: 1px solid #f0f0f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #f0f0f0;
     }
-    
+
     .attempt-number {
-        font-weight: bold;
-        color: #8B4513;
-        font-size: 1.1rem;
+      font-weight: bold;
+      color: #8b4513;
+      font-size: 1.1rem;
     }
-    
+
     .attempt-arrangement {
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: #333;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #333;
     }
-    
+
     .attempt-visual {
-        margin: 10px 0;
+      margin: 10px 0;
     }
-    
+
     .attempt-feedback {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 10px;
-        margin-top: 10px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
     }
-    
+
     .feedback-item {
-        text-align: center;
-        padding: 8px;
-        border-radius: 6px;
-        background: #f8f8f8;
+      text-align: center;
+      padding: 8px;
+      border-radius: 6px;
+      background: #f8f8f8;
     }
-    
+
     .feedback-label {
-        font-size: 0.8rem;
-        color: #666;
-        margin-bottom: 2px;
+      font-size: 0.8rem;
+      color: #666;
+      margin-bottom: 2px;
     }
-    
+
     .feedback-value {
-        font-size: 1.2rem;
-        font-weight: bold;
-        color: #333;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #333;
     }
-    
-    .pleased { background: linear-gradient(135deg, #d4edda, #c3e6cb); }
-    .incorrect { background: linear-gradient(135deg, #fff3cd, #fce4aa); }
-    .unknown { background: linear-gradient(135deg, #f8d7da, #f1b9bc); }
-    
+
+    .pleased {
+      background: linear-gradient(135deg, #d4edda, #c3e6cb);
+    }
+    .incorrect {
+      background: linear-gradient(135deg, #fff3cd, #fce4aa);
+    }
+    .unknown {
+      background: linear-gradient(135deg, #f8d7da, #f1b9bc);
+    }
+
     /* Responsive Design */
     @media (max-width: 768px) {
-        main {
-            padding: 0 10px 20px;
-        }
-        
-        h1 {
-            font-size: 1.8rem;
-        }
-        
-        h2 {
-            font-size: 1.5rem;
-        }
-        
-        section {
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        
-        .group-photo {
-            max-width: 300px;
-            margin: 20px auto 30px;
-        }
-        
-        .etc-legend {
-            gap: 15px;
-            padding: 15px;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .etc-legend .etc-item {
-            flex-direction: row;
-            gap: 15px;
-            padding: 10px 15px;
-            width: 100%;
-            max-width: 200px;
-        }
-        
-        .etc-image {
-            width: 35px;
-            height: 35px;
-        }
-        
-        .instruction-box {
-            padding: 12px;
-            margin-bottom: 15px;
-        }
-        
-        .instruction-box h3 {
-            font-size: 1rem;
-        }
-        
-        .instruction-box p {
-            font-size: 0.9rem;
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        label {
-            font-size: 0.95rem;
-            margin: 10px 0 6px 0;
-        }
-        
-        input[type="text"], input[type="number"] {
-            padding: 12px 14px;
-            font-size: 1rem;
-        }
-        
-        .input-hint {
-            font-size: 0.8rem;
-            margin-top: 4px;
-        }
-        
-        .arrangement-preview {
-            padding: 15px;
-        }
-        
-        .preview-images {
-            gap: 8px;
-        }
-        
-        .preview-image, .preview-placeholder {
-            width: 48px;
-            height: 48px;
-        }
-        
-        /* Hide desktop table on mobile */
-        table {
-            display: none;
-        }
-        
-        /* Show mobile cards */
-        .mobile-table {
-            display: block;
-        }
-        
-        .suggestion-item {
-            flex-direction: column;
-            align-items: stretch;
-            padding: 12px;
-        }
-        
-        .suggestion-arrangement {
-            justify-content: center;
-            margin-bottom: 10px;
-        }
-        
-        .suggestion-text {
-            margin-left: 0;
-            text-align: center;
-            margin-bottom: 10px;
-        }
-        
-        .suggestion-image {
-            width: 28px;
-            height: 28px;
-        }
-        
-        button {
-            padding: 12px 20px;
-            font-size: 1rem;
-        }
-        
-        .button-container {
-            flex-direction: column;
-            gap: 10px;
-        }
+      main {
+        padding: 0 10px 20px;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      section {
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+
+      .group-photo {
+        max-width: 300px;
+        margin: 20px auto 30px;
+      }
+
+      .etc-legend {
+        gap: 15px;
+        padding: 15px;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .etc-legend .etc-item {
+        flex-direction: row;
+        gap: 15px;
+        padding: 10px 15px;
+        width: 100%;
+        max-width: 200px;
+      }
+
+      .etc-image {
+        width: 35px;
+        height: 35px;
+      }
+
+      .instruction-box {
+        padding: 12px;
+        margin-bottom: 15px;
+      }
+
+      .instruction-box h3 {
+        font-size: 1rem;
+      }
+
+      .instruction-box p {
+        font-size: 0.9rem;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      label {
+        font-size: 0.95rem;
+        margin: 10px 0 6px 0;
+      }
+
+      input[type="text"],
+      input[type="number"] {
+        padding: 12px 14px;
+        font-size: 1rem;
+      }
+
+      .input-hint {
+        font-size: 0.8rem;
+        margin-top: 4px;
+      }
+
+      .arrangement-preview {
+        padding: 15px;
+      }
+
+      .preview-images {
+        gap: 8px;
+      }
+
+      .preview-image,
+      .preview-placeholder {
+        width: 48px;
+        height: 48px;
+      }
+
+      /* Hide desktop table on mobile */
+      table {
+        display: none;
+      }
+
+      /* Show mobile cards */
+      .mobile-table {
+        display: block;
+      }
+
+      .suggestion-item {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 12px;
+      }
+
+      .suggestion-arrangement {
+        justify-content: center;
+        margin-bottom: 10px;
+      }
+
+      .suggestion-text {
+        margin-left: 0;
+        text-align: center;
+        margin-bottom: 10px;
+      }
+
+      .suggestion-image {
+        width: 28px;
+        height: 28px;
+      }
+
+      button {
+        padding: 12px 20px;
+        font-size: 1rem;
+      }
+
+      .button-container {
+        flex-direction: column;
+        gap: 10px;
+      }
     }
-    
+
     /* Animation for loading */
     @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
-    
+
     section {
-        animation: fadeInUp 0.6s ease forwards;
+      animation: fadeInUp 0.6s ease forwards;
     }
-    
-    section:nth-child(1) { animation-delay: 0.1s; }
-    section:nth-child(2) { animation-delay: 0.2s; }
-    section:nth-child(3) { animation-delay: 0.3s; }
-</style>
-</style>
-<body>
+
+    section:nth-child(1) {
+      animation-delay: 0.1s;
+    }
+    section:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    section:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+
+    /* Step 2 Section with Speech Bubble */
+    .step2-section {
+      position: relative;
+      background: linear-gradient(135deg, #e8f4f8, #d1e7dd);
+      border: 2px solid #0f5132;
+      border-radius: 15px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 4px 15px rgba(15, 81, 50, 0.2);
+    }
+
+    /* Speech bubble pointer for desktop */
+    @media (min-width: 769px) {
+      .step2-section::before {
+        content: "";
+        position: absolute;
+        top: 20px;
+        right: -20px;
+        width: 0;
+        height: 0;
+        border: 20px solid transparent;
+        border-left-color: #0f5132;
+        border-right: none;
+        border-top: 15px solid transparent;
+        border-bottom: 15px solid transparent;
+      }
+
+      .step2-section::after {
+        content: "";
+        position: absolute;
+        top: 22px;
+        right: -16px;
+        width: 0;
+        height: 0;
+        border: 18px solid transparent;
+        border-left-color: #e8f4f8;
+        border-right: none;
+        border-top: 13px solid transparent;
+        border-bottom: 13px solid transparent;
+      }
+      
+      .step2-section {
+        margin-right: 140px;
+      }
+    }
+
+    /* Mobile speech bubble pointer - pointing upward to statue */
+    @media (max-width: 768px) {
+      .step2-section::before {
+        content: "";
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border: 20px solid transparent;
+        border-bottom-color: #0f5132;
+        border-top: none;
+        border-left: 15px solid transparent;
+        border-right: 15px solid transparent;
+      }
+
+      .step2-section::after {
+        content: "";
+        position: absolute;
+        top: -16px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border: 18px solid transparent;
+        border-bottom-color: #e8f4f8;
+        border-top: none;
+        border-left: 13px solid transparent;
+        border-right: 13px solid transparent;
+      }
+
+      .step2-section {
+        margin: 20px 0;
+        margin-right: 0;
+      }
+    }
+
+    .step2-header {
+      background: linear-gradient(135deg, #0f5132, #198754);
+      color: white;
+      padding: 10px 15px;
+      border-radius: 10px;
+      margin: -10px -10px 15px -10px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      text-align: center;
+    }
+  </style>
+  <body>
     <header>
-        <img src="images/group-photo.png" alt="Group Photo" class="group-photo">
-        <h1>Fountain of the Wiseman - GPQ Tool</h1>
-        <p>Master the statue offering puzzle by tracking attempts and getting smart suggestions!</p>
+      <img src="images/group-photo.png" alt="Group Photo" class="group-photo" />
+      <h1>Fountain of the Wiseman - GPQ Tool</h1>
+      <p>
+        Master the statue offering puzzle by tracking attempts and getting smart
+        suggestions!
+      </p>
     </header>
     <main>
-        <section id="attempt-form">
-            
-            <img src="images/guard-statue.gif" alt="Guard Statue" class="guard-statue">
-            
-            <div class="instruction-box">
-                <h3>How to Use This Tool:</h3>
-                <p><strong>Step 1.</strong> Paste your offering arrangement (like SSMM) <br>
-                <strong>Step 2.</strong> Enter the 3 number cues received from NPC.<br>
-                <strong>Step 3.</strong> Hit "Add Attempt" to log your try and get suggestions.</p>
-            </div>
-            
-            <form id="attemptsForm">
-                <div class="form-group">
-                    <label for="arrangement"><strong>Step 1:</strong> Offering Arrangement (F=Food, M=Medal, S=Scroll, W=Wine):</label>
-                    <input type="text" id="arrangement" name="arrangement" maxlength="4"    
-                           placeholder="FMSW" autocomplete="off" style="text-transform: uppercase;">
-                    <div class="input-hint">Enter 4 letters for your statue arrangement (e.g., FMSW = Food-Medal-Scroll-Wine)</div>
-                </div>
-                
-                <div class="arrangement-preview">
-                    <strong>Preview Your Statue Arrangement:</strong>
-                    <div class="preview-images" id="previewImages">
-                        <div class="preview-placeholder">1</div>
-                        <div class="preview-placeholder">2</div>
-                        <div class="preview-placeholder">3</div>
-                        <div class="preview-placeholder">4</div>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="pleased"><strong>Step 2:</strong> # of Correct Offerings in Right Place:</label>
-                    <input type="number" id="pleased" name="pleased" min="0" max="4" value="0" required>
-                    <div class="input-hint">How many offerings are the correct type AND in the correct statue position?</div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="incorrect"># of Correct Offerings in Wrong Place:</label>
-                    <input type="number" id="incorrect" name="incorrect" min="0" max="4" value="0" required>
-                    <div class="input-hint">How many offerings are correct but placed at the wrong statue?</div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="unknown"># of Wrong Offerings:</label>
-                    <input type="number" id="unknown" name="unknown" min="0" max="4" value="0" required>
-                    <div class="input-hint">How many offerings are completely wrong for this combination?</div>
-                </div>
-                
-                <div class="button-container">
-                    <button type="submit"><strong>Step 3:</strong> Add Attempt</button>
-                    <button type="button" id="resetButton" style="background: linear-gradient(135deg, #636363, #777777);">Reset All Attempts</button>
-                </div>
-            </form>
-        </section>
+      <section id="attempt-form">
+        <div class="instruction-box">
+          <h3>How to Use This Tool:</h3>
+          <p>
+            <strong>Step 1.</strong> Paste your offering arrangement (like SSMM)
+            <br />
+            <strong>Step 2.</strong> Enter the 3 number cues received from
+            NPC.<br />
+            <strong>Step 3.</strong> Hit "Add Attempt" to log your try and get
+            suggestions.
+          </p>
+        </div>
 
-        <section id="attempts-list">
-            <h2>Attempt History</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Statue Arrangement</th>
-                        <th>Visual</th>
-                        <th>Right Place</th>
-                        <th>Wrong Place</th>
-                        <th>Wrong Offering</th>
-                    </tr>
-                </thead>
-                <tbody id="attemptsTableBody">
-                    <tr class="no-attempt-prompt">
-                        <td colspan="5" style="text-align: center; color: #888; font-style: italic; padding: 30px;">No attempts yet - start by entering your first statue arrangement above!</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <!-- Mobile-friendly attempt cards -->
-            <div class="mobile-table" id="mobileAttemptsContainer">
-                <div class="no-attempt-prompt" style="text-align: center; color: #888; font-style: italic; padding: 30px;">No attempts yet - start by entering your first statue arrangement above!</div>
+        <form id="attemptsForm">
+          <div class="form-group">
+            <label for="arrangement"
+              ><strong>Step 1:</strong> Offering Arrangement (F=Food, M=Medal,
+              S=Scroll, W=Wine):</label
+            >
+            <input
+              type="text"
+              id="arrangement"
+              name="arrangement"
+              maxlength="4"
+              placeholder="FMSW"
+              autocomplete="off"
+              style="text-transform: uppercase"
+            />
+            <div class="input-hint">
+              Enter 4 letters for your statue arrangement (e.g., FMSW =
+              Food-Medal-Scroll-Wine)
             </div>
-        </section>
+          </div>
 
-        <section id="suggestions-section" class="suggestions-section">
-            <h2>Smart Statue Suggestions</h2>
-            <div id="suggestionsContainer">
-                <div class="instruction-box">
-                    <h3>Get Started:</h3>
-                    <p>Enter your first attempt above and I'll analyze the feedback to suggest the most likely statue arrangements! Remember: you only have 7 attempts before mobs spawn.</p>
-                </div>
+          <div class="arrangement-preview">
+            <strong>Preview Your Statue Arrangement:</strong>
+            <div class="preview-images" id="previewImages">
+              <div class="preview-placeholder">1</div>
+              <div class="preview-placeholder">2</div>
+              <div class="preview-placeholder">3</div>
+              <div class="preview-placeholder">4</div>
             </div>
-        </section>
+          </div>
+
+          <img
+            src="images/guard-statue.gif"
+            alt="Guard Statue"
+            class="guard-statue"
+          />
+
+          <div class="step2-section">
+            <div class="form-group">
+              <label for="pleased"
+                ><strong>Step 2:</strong> # of Correct Offerings in Right
+                Place:</label
+              >
+              <input
+                type="number"
+                id="pleased"
+                name="pleased"
+                min="0"
+                max="4"
+                value="0"
+                required
+              />
+              <div class="input-hint">
+                How many offerings are the correct type AND in the correct
+                statue position?
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="incorrect"
+                ># of Correct Offerings in Wrong Place:</label
+              >
+              <input
+                type="number"
+                id="incorrect"
+                name="incorrect"
+                min="0"
+                max="4"
+                value="0"
+                required
+              />
+              <div class="input-hint">
+                How many offerings are correct but placed at the wrong statue?
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="unknown"># of Wrong Offerings:</label>
+              <input
+                type="number"
+                id="unknown"
+                name="unknown"
+                min="0"
+                max="4"
+                value="0"
+                required
+              />
+              <div class="input-hint">
+                How many offerings are completely wrong for this combination?
+              </div>
+            </div>
+          </div>
+
+          <div class="button-container">
+            <button type="submit"><strong>Step 3:</strong> Add Attempt</button>
+            <button
+              type="button"
+              id="resetButton"
+              style="background: linear-gradient(135deg, #636363, #777777)"
+            >
+              Reset All Attempts
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <section id="attempts-list">
+        <h2>Attempt History</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Statue Arrangement</th>
+              <th>Visual</th>
+              <th>Right Place</th>
+              <th>Wrong Place</th>
+              <th>Wrong Offering</th>
+            </tr>
+          </thead>
+          <tbody id="attemptsTableBody">
+            <tr class="no-attempt-prompt">
+              <td
+                colspan="5"
+                style="
+                  text-align: center;
+                  color: #888;
+                  font-style: italic;
+                  padding: 30px;
+                "
+              >
+                No attempts yet - start by entering your first statue
+                arrangement above!
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Mobile-friendly attempt cards -->
+        <div class="mobile-table" id="mobileAttemptsContainer">
+          <div
+            class="no-attempt-prompt"
+            style="
+              text-align: center;
+              color: #888;
+              font-style: italic;
+              padding: 30px;
+            "
+          >
+            No attempts yet - start by entering your first statue arrangement
+            above!
+          </div>
+        </div>
+      </section>
+
+      <section id="suggestions-section" class="suggestions-section">
+        <h2>💡 Smart Suggestions 💡</h2>
+        <div id="suggestionsContainer">
+          <div class="instruction-box">
+            <h3>Get Started:</h3>
+            <p>
+              Enter your first attempt above and I'll analyze the feedback to
+              suggest the most likely statue arrangements! Remember: you only
+              have 7 attempts before mobs spawn.
+            </p>
+          </div>
+        </div>
+      </section>
     </main>
     <footer>
-        <p>&copy; 2025 Fountain of the Wiseman - GPQ Tool | Made by OreoNinja</p>
+      <p>&copy; 2025 Fountain of the Wiseman - GPQ Tool | Made by OreoNinja</p>
     </footer>
-</body>
+  </body>
 </html>
 
 <script>
-// ETC to image mapping
-const etcImages = {
-    'F': 'images/food.png',
-    'M': 'images/medal.png',
-    'S': 'images/scroll.png',
-    'W': 'images/wine.gif'
-};
+  // ETC to image mapping
+  const etcImages = {
+    F: "images/food.png",
+    M: "images/medal.png",
+    S: "images/scroll.png",
+    W: "images/wine.gif",
+  };
 
-// Store all attempts for analysis
-let attempts = [];
+  // Store all attempts for analysis
+  let attempts = [];
 
-// Update preview images when arrangement changes
-function updatePreview() {
-    const arrangement = document.getElementById('arrangement').value.toUpperCase();
-    const previewContainer = document.getElementById('previewImages');
-    previewContainer.innerHTML = '';
+  // Update preview images when arrangement changes
+  function updatePreview() {
+    const arrangement = document
+      .getElementById("arrangement")
+      .value.toUpperCase();
+    const previewContainer = document.getElementById("previewImages");
+    previewContainer.innerHTML = "";
 
     for (let i = 0; i < 4; i++) {
-        const letter = arrangement[i];
-        if (letter && etcImages[letter]) {
-            const img = document.createElement('img');
-            img.src = etcImages[letter];
-            img.alt = letter;
-            img.className = 'preview-image';
-            img.title = `Position ${i + 1}: ${letter}`;
-            previewContainer.appendChild(img);
-        }
+      const letter = arrangement[i];
+      if (letter && etcImages[letter]) {
+        const img = document.createElement("img");
+        img.src = etcImages[letter];
+        img.alt = letter;
+        img.className = "preview-image";
+        img.title = `Position ${i + 1}: ${letter}`;
+        previewContainer.appendChild(img);
+      }
     }
-}
+  }
 
-// Create visual arrangement for table
-function createVisualArrangement(arrangement) {
-    const visualDiv = document.createElement('div');
-    visualDiv.className = 'table-arrangement';
-    
+  // Create visual arrangement for table
+  function createVisualArrangement(arrangement) {
+    const visualDiv = document.createElement("div");
+    visualDiv.className = "table-arrangement";
+
     for (let letter of arrangement) {
-        if (etcImages[letter]) {
-            const img = document.createElement('img');
-            img.src = etcImages[letter];
-            img.alt = letter;
-            img.className = 'table-etc-image';
-            img.title = letter;
-            visualDiv.appendChild(img);
-        }
+      if (etcImages[letter]) {
+        const img = document.createElement("img");
+        img.src = etcImages[letter];
+        img.alt = letter;
+        img.className = "table-etc-image";
+        img.title = letter;
+        visualDiv.appendChild(img);
+      }
     }
-    
-    return visualDiv;
-}
 
-// Add mobile attempt card
-function addMobileAttemptCard(arrangement, pleased, incorrect, unknown, attemptNumber) {
-    const container = document.getElementById('mobileAttemptsContainer');
-    
+    return visualDiv;
+  }
+
+  // Add mobile attempt card
+  function addMobileAttemptCard(
+    arrangement,
+    pleased,
+    incorrect,
+    unknown,
+    attemptNumber
+  ) {
+    const container = document.getElementById("mobileAttemptsContainer");
+
     // Clear placeholder text on first attempt
-    if (attemptNumber === 1 && container.querySelector('div[class="no-attempt-prompt"]')) {
-        container.innerHTML = '';
+    if (
+      attemptNumber === 1 &&
+      container.querySelector('div[class="no-attempt-prompt"]')
+    ) {
+      container.innerHTML = "";
     }
-    
-    const card = document.createElement('div');
-    card.className = 'attempt-card';
-    
-    const header = document.createElement('div');
-    header.className = 'attempt-card-header';
-    
-    const attemptNum = document.createElement('div');
-    attemptNum.className = 'attempt-number';
+
+    const card = document.createElement("div");
+    card.className = "attempt-card";
+
+    const header = document.createElement("div");
+    header.className = "attempt-card-header";
+
+    const attemptNum = document.createElement("div");
+    attemptNum.className = "attempt-number";
     attemptNum.textContent = `Attempt #${attemptNumber}`;
-    
-    const arrangementText = document.createElement('div');
-    arrangementText.className = 'attempt-arrangement';
+
+    const arrangementText = document.createElement("div");
+    arrangementText.className = "attempt-arrangement";
     arrangementText.textContent = arrangement;
-    
+
     header.appendChild(attemptNum);
     header.appendChild(arrangementText);
-    
-    const visual = document.createElement('div');
-    visual.className = 'attempt-visual';
+
+    const visual = document.createElement("div");
+    visual.className = "attempt-visual";
     visual.appendChild(createVisualArrangement(arrangement));
-    
-    const feedback = document.createElement('div');
-    feedback.className = 'attempt-feedback';
-    
-    const pleasedDiv = document.createElement('div');
-    pleasedDiv.className = 'feedback-item pleased';
+
+    const feedback = document.createElement("div");
+    feedback.className = "attempt-feedback";
+
+    const pleasedDiv = document.createElement("div");
+    pleasedDiv.className = "feedback-item pleased";
     pleasedDiv.innerHTML = `<div class="feedback-label">Right Place</div><div class="feedback-value">${pleased}</div>`;
-    
-    const incorrectDiv = document.createElement('div');
-    incorrectDiv.className = 'feedback-item incorrect';
+
+    const incorrectDiv = document.createElement("div");
+    incorrectDiv.className = "feedback-item incorrect";
     incorrectDiv.innerHTML = `<div class="feedback-label">Wrong Place</div><div class="feedback-value">${incorrect}</div>`;
-    
-    const unknownDiv = document.createElement('div');
-    unknownDiv.className = 'feedback-item unknown';
+
+    const unknownDiv = document.createElement("div");
+    unknownDiv.className = "feedback-item unknown";
     unknownDiv.innerHTML = `<div class="feedback-label">Wrong Offering</div><div class="feedback-value">${unknown}</div>`;
-    
+
     feedback.appendChild(pleasedDiv);
     feedback.appendChild(incorrectDiv);
     feedback.appendChild(unknownDiv);
-    
+
     card.appendChild(header);
     card.appendChild(visual);
     card.appendChild(feedback);
-    
-    container.appendChild(card);
-}
 
-// Generate all possible arrangements
-function generateAllArrangements() {
-    const etcs = ['F', 'M', 'S', 'W'];
+    container.appendChild(card);
+  }
+
+  // Generate all possible arrangements
+  function generateAllArrangements() {
+    const etcs = ["F", "M", "S", "W"];
     const arrangements = [];
-    
+
     // Generate all combinations with repetition allowed (4^4 = 256 total)
     for (let i = 0; i < 4; i++) {
-        for (let j = 0; j < 4; j++) {
-            for (let k = 0; k < 4; k++) {
-                for (let l = 0; l < 4; l++) {
-                    arrangements.push(etcs[i] + etcs[j] + etcs[k] + etcs[l]);
-                }
-            }
+      for (let j = 0; j < 4; j++) {
+        for (let k = 0; k < 4; k++) {
+          for (let l = 0; l < 4; l++) {
+            arrangements.push(etcs[i] + etcs[j] + etcs[k] + etcs[l]);
+          }
         }
+      }
     }
-    
-    return arrangements;
-}
 
-// Check if arrangement is consistent with previous attempts
-function isConsistentWithAttempts(arrangement, attempts) {
+    return arrangements;
+  }
+
+  // Check if arrangement is consistent with previous attempts
+  function isConsistentWithAttempts(arrangement, attempts) {
     for (let attempt of attempts) {
-        const pleased = parseInt(attempt.pleased);
-        const incorrect = parseInt(attempt.incorrect);
-        const unknown = parseInt(attempt.unknown);
-        
-        let actualPleased = 0;
-        let actualIncorrect = 0;
-        
-        // Count pleased (correct position and correct item)
-        for (let i = 0; i < 4; i++) {
-            if (arrangement[i] === attempt.arrangement[i]) {
-                actualPleased++;
-            }
+      const pleased = parseInt(attempt.pleased);
+      const incorrect = parseInt(attempt.incorrect);
+      const unknown = parseInt(attempt.unknown);
+
+      let actualPleased = 0;
+      let actualIncorrect = 0;
+
+      // Count pleased (correct position and correct item)
+      for (let i = 0; i < 4; i++) {
+        if (arrangement[i] === attempt.arrangement[i]) {
+          actualPleased++;
         }
-        
-        // Count incorrect (correct item but wrong position)
-        let tempArrangement = arrangement.split('');
-        let tempAttempt = attempt.arrangement.split('');
-        
-        // Remove correct positions from both arrays
-        for (let i = 3; i >= 0; i--) {
-            if (tempArrangement[i] === tempAttempt[i]) {
-                tempArrangement.splice(i, 1);
-                tempAttempt.splice(i, 1);
-            }
+      }
+
+      // Count incorrect (correct item but wrong position)
+      let tempArrangement = arrangement.split("");
+      let tempAttempt = attempt.arrangement.split("");
+
+      // Remove correct positions from both arrays
+      for (let i = 3; i >= 0; i--) {
+        if (tempArrangement[i] === tempAttempt[i]) {
+          tempArrangement.splice(i, 1);
+          tempAttempt.splice(i, 1);
         }
-        
-        // Count how many items from attempt are in the remaining arrangement
-        for (let letter of tempAttempt) {
-            const index = tempArrangement.indexOf(letter);
-            if (index !== -1) {
-                actualIncorrect++;
-                tempArrangement.splice(index, 1);
-            }
+      }
+
+      // Count how many items from attempt are in the remaining arrangement
+      for (let letter of tempAttempt) {
+        const index = tempArrangement.indexOf(letter);
+        if (index !== -1) {
+          actualIncorrect++;
+          tempArrangement.splice(index, 1);
         }
-        
-        // Unknown is total minus pleased minus incorrect
-        const actualUnknown = 4 - actualPleased - actualIncorrect;
-        
-        if (actualPleased !== pleased || actualIncorrect !== incorrect || actualUnknown !== unknown) {
-            return false;
-        }
+      }
+
+      // Unknown is total minus pleased minus incorrect
+      const actualUnknown = 4 - actualPleased - actualIncorrect;
+
+      if (
+        actualPleased !== pleased ||
+        actualIncorrect !== incorrect ||
+        actualUnknown !== unknown
+      ) {
+        return false;
+      }
     }
     return true;
-}
+  }
 
-// Generate smart suggestions
-function generateSuggestions() {
+  // Generate smart suggestions
+  function generateSuggestions() {
     if (attempts.length === 0) {
-        document.getElementById('suggestionsContainer').innerHTML = '<p>Try some statue arrangements to get smart suggestions based on feedback!</p>';
-        return;
+      document.getElementById("suggestionsContainer").innerHTML =
+        "<p>Try some statue arrangements to get smart suggestions based on feedback!</p>";
+      return;
     }
-    
-    console.log('Attempts:', attempts); // Debug log
-    
+
+    console.log("Attempts:", attempts); // Debug log
+
     const allArrangements = generateAllArrangements();
-    const validArrangements = allArrangements.filter(arr => 
-        isConsistentWithAttempts(arr, attempts) && 
-        !attempts.some(attempt => attempt.arrangement === arr)
+    const validArrangements = allArrangements.filter(
+      (arr) =>
+        isConsistentWithAttempts(arr, attempts) &&
+        !attempts.some((attempt) => attempt.arrangement === arr)
     );
-    
-    console.log('Valid arrangements found:', validArrangements.length); // Debug log
+
+    console.log("Valid arrangements found:", validArrangements.length); // Debug log
     if (validArrangements.length < 10) {
-        console.log('Valid arrangements:', validArrangements); // Debug log
+      console.log("Valid arrangements:", validArrangements); // Debug log
     }
-    
-    const container = document.getElementById('suggestionsContainer');
-    container.innerHTML = '';
-    
+
+    const container = document.getElementById("suggestionsContainer");
+    container.innerHTML = "";
+
     if (validArrangements.length === 0) {
-        container.innerHTML = '<p>No valid arrangements found. Check your feedback values!</p>';
-        return;
+      container.innerHTML =
+        "<p>No valid arrangements found. Check your feedback values!</p>";
+      return;
     }
-    
+
     if (validArrangements.length === 1) {
-        container.innerHTML = '<p><strong>Statue combination found!</strong></p>';
+      container.innerHTML = "<p><strong>Statue combination found!</strong></p>";
     } else {
-        container.innerHTML = `<p><strong>Possible Statue Arrangements (${validArrangements.length} possibilities):</strong></p>`;
+      container.innerHTML = `<p><strong>Possible Statue Arrangements (${validArrangements.length} possibilities):</strong></p>`;
     }
-    
+
     // Show top 5 suggestions
     const topSuggestions = validArrangements.slice(0, 5);
-    
-    topSuggestions.forEach(arrangement => {
-        const suggestionDiv = document.createElement('div');
-        suggestionDiv.className = 'suggestion-item';
-        
-        const leftDiv = document.createElement('div');
-        leftDiv.style.display = 'flex';
-        leftDiv.style.alignItems = 'center';
-        
-        const visualDiv = document.createElement('div');
-        visualDiv.className = 'suggestion-arrangement';
-        
-        for (let letter of arrangement) {
-            const img = document.createElement('img');
-            img.src = etcImages[letter];
-            img.alt = letter;
-            img.className = 'suggestion-image';
-            visualDiv.appendChild(img);
-        }
-        
-        const textDiv = document.createElement('div');
-        textDiv.className = 'suggestion-text';
-        textDiv.textContent = arrangement;
-        
-        leftDiv.appendChild(visualDiv);
-        leftDiv.appendChild(textDiv);
-        
-        const button = document.createElement('button');
-        button.className = 'apply-suggestion';
-        button.textContent = 'Try This Combo';
-        button.onclick = () => applySuggestion(arrangement);
-        
-        suggestionDiv.appendChild(leftDiv);
-        suggestionDiv.appendChild(button);
-        container.appendChild(suggestionDiv);
-    });
-}
 
-// Reset all attempts and clear the interface
-function resetAllAttempts() {
+    topSuggestions.forEach((arrangement) => {
+      const suggestionDiv = document.createElement("div");
+      suggestionDiv.className = "suggestion-item";
+
+      const leftDiv = document.createElement("div");
+      leftDiv.style.display = "flex";
+      leftDiv.style.alignItems = "center";
+
+      const visualDiv = document.createElement("div");
+      visualDiv.className = "suggestion-arrangement";
+
+      for (let letter of arrangement) {
+        const img = document.createElement("img");
+        img.src = etcImages[letter];
+        img.alt = letter;
+        img.className = "suggestion-image";
+        visualDiv.appendChild(img);
+      }
+
+      const textDiv = document.createElement("div");
+      textDiv.className = "suggestion-text";
+      textDiv.textContent = arrangement;
+
+      leftDiv.appendChild(visualDiv);
+      leftDiv.appendChild(textDiv);
+
+      const button = document.createElement("button");
+      button.className = "apply-suggestion";
+      button.textContent = "Try This Combo";
+      button.onclick = () => applySuggestion(arrangement);
+
+      suggestionDiv.appendChild(leftDiv);
+      suggestionDiv.appendChild(button);
+      container.appendChild(suggestionDiv);
+    });
+  }
+
+  // Reset all attempts and clear the interface
+  function resetAllAttempts() {
     // Clear attempts array
     attempts = [];
-    
-    // Reset table
-    const tableBody = document.getElementById('attemptsTableBody');
-    tableBody.innerHTML = '<tr class="no-attempt-prompt"><td colspan="5" style="text-align: center; color: #888; font-style: italic; padding: 30px;">No attempts yet - start by entering your first statue arrangement above!</td></tr>';
-    
-    // Reset mobile cards
-    const mobileContainer = document.getElementById('mobileAttemptsContainer');
-    mobileContainer.innerHTML = '<div class="no-attempt-prompt"style="text-align: center; color: #888; font-style: italic; padding: 30px;">No attempts yet - start by entering your first statue arrangement above!</div>';
-    
-    // Reset suggestions
-    const suggestionsContainer = document.getElementById('suggestionsContainer');
-    suggestionsContainer.innerHTML = '<div class="instruction-box"><h3>Get Started:</h3><p>Enter your first attempt above and I\'ll analyze the feedback to suggest the most likely statue arrangements! Remember: you only have 7 attempts before mobs spawn.</p></div>';
-    
-    // Reset form
-    document.getElementById('attemptsForm').reset();
-    updatePreview();
-    
-    console.log('All attempts reset'); // Debug log
-}
 
-// Apply a suggestion to the form
-function applySuggestion(arrangement) {
-    document.getElementById('arrangement').value = arrangement;
+    // Reset table
+    const tableBody = document.getElementById("attemptsTableBody");
+    tableBody.innerHTML =
+      '<tr class="no-attempt-prompt"><td colspan="5" style="text-align: center; color: #888; font-style: italic; padding: 30px;">No attempts yet - start by entering your first statue arrangement above!</td></tr>';
+
+    // Reset mobile cards
+    const mobileContainer = document.getElementById("mobileAttemptsContainer");
+    mobileContainer.innerHTML =
+      '<div class="no-attempt-prompt"style="text-align: center; color: #888; font-style: italic; padding: 30px;">No attempts yet - start by entering your first statue arrangement above!</div>';
+
+    // Reset suggestions
+    const suggestionsContainer = document.getElementById(
+      "suggestionsContainer"
+    );
+    suggestionsContainer.innerHTML =
+      '<div class="instruction-box"><h3>Get Started:</h3><p>Enter your first attempt above and I\'ll analyze the feedback to suggest the most likely statue arrangements! Remember: you only have 7 attempts before mobs spawn.</p></div>';
+
+    // Reset form
+    document.getElementById("attemptsForm").reset();
     updatePreview();
-    
+
+    console.log("All attempts reset"); // Debug log
+  }
+
+  // Apply a suggestion to the form
+  function applySuggestion(arrangement) {
+    document.getElementById("arrangement").value = arrangement;
+    updatePreview();
+
     // Scroll to form for next attempt
-    document.getElementById('attempt-form').scrollIntoView({ behavior: 'smooth' });
-    
+    document
+      .getElementById("attempt-form")
+      .scrollIntoView({ behavior: "smooth" });
+
     // Focus on the first feedback field
     setTimeout(() => {
-        document.getElementById('pleased').focus();
+      document.getElementById("pleased").focus();
     }, 500);
-}
+  }
 
-// Initialize everything once DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
+  // Initialize everything once DOM is loaded
+  document.addEventListener("DOMContentLoaded", function () {
     // Add event listener for real-time preview
-    document.getElementById('arrangement').addEventListener('input', updatePreview);
+    document
+      .getElementById("arrangement")
+      .addEventListener("input", updatePreview);
 
     // Form submission handler
-    document.getElementById('attemptsForm').addEventListener('submit', function(event) {
+    document
+      .getElementById("attemptsForm")
+      .addEventListener("submit", function (event) {
         event.preventDefault();
 
-        const arrangement = document.getElementById('arrangement').value.toUpperCase();
-        const pleased = document.getElementById('pleased').value || '0';
-        const incorrect = document.getElementById('incorrect').value || '0';
-        const unknown = document.getElementById('unknown').value || '0';
+        const arrangement = document
+          .getElementById("arrangement")
+          .value.toUpperCase();
+        const pleased = document.getElementById("pleased").value || "0";
+        const incorrect = document.getElementById("incorrect").value || "0";
+        const unknown = document.getElementById("unknown").value || "0";
 
         // Store attempt for analysis
         attempts.push({ arrangement, pleased, incorrect, unknown });
 
-        const tableBody = document.getElementById('attemptsTableBody');
-        
+        const tableBody = document.getElementById("attemptsTableBody");
+
         // Clear the placeholder row if this is the first attempt
-        if (attempts.length === 1 && tableBody.querySelector('td[colspan="5"]')) {
-            tableBody.innerHTML = '';
+        if (
+          attempts.length === 1 &&
+          tableBody.querySelector('td[colspan="5"]')
+        ) {
+          tableBody.innerHTML = "";
         }
-        
-        const newRow = document.createElement('tr');
-        
-        const visualCell = document.createElement('td');
+
+        const newRow = document.createElement("tr");
+
+        const visualCell = document.createElement("td");
         visualCell.appendChild(createVisualArrangement(arrangement));
 
         newRow.innerHTML = `
@@ -1127,37 +1400,51 @@ document.addEventListener('DOMContentLoaded', function() {
             <td>${incorrect}</td>
             <td>${unknown}</td>
         `;
-        
+
         // Replace the empty visual cell
         newRow.cells[1].appendChild(createVisualArrangement(arrangement));
 
         tableBody.appendChild(newRow);
-        
+
         // Add mobile card
-        addMobileAttemptCard(arrangement, pleased, incorrect, unknown, attempts.length);
+        addMobileAttemptCard(
+          arrangement,
+          pleased,
+          incorrect,
+          unknown,
+          attempts.length
+        );
 
         // Generate new suggestions
         generateSuggestions();
 
         // Clear form fields and reset preview
-        document.getElementById('attemptsForm').reset();
+        document.getElementById("attemptsForm").reset();
         updatePreview();
-        
+
         // Scroll to feedback section
-        document.getElementById('suggestions-section').scrollIntoView({ behavior: 'smooth' });
-    });
+        document
+          .getElementById("suggestions-section")
+          .scrollIntoView({ behavior: "smooth" });
+      });
 
     // Add event listener for reset button
-    document.getElementById('resetButton').addEventListener('click', function() {
-        if (confirm('Are you sure you want to reset all attempts? This cannot be undone.')) {
-            resetAllAttempts();
+    document
+      .getElementById("resetButton")
+      .addEventListener("click", function () {
+        if (
+          confirm(
+            "Are you sure you want to reset all attempts? This cannot be undone."
+          )
+        ) {
+          resetAllAttempts();
         }
-    });
+      });
 
     // Initialize preview on page load
     updatePreview();
-    
+
     // Focus on arrangement input field when page loads
-    document.getElementById('arrangement').focus();
-});
+    document.getElementById("arrangement").focus();
+  });
 </script>
