@@ -1057,6 +1057,65 @@ Key mechanics:
   // Store all attempts for analysis
   let attempts = [];
 
+  // Save attempts to localStorage
+  function saveAttemptsToStorage() {
+    localStorage.setItem('fountainOfWiseman_attempts', JSON.stringify(attempts));
+  }
+
+  // Load attempts from localStorage
+  function loadAttemptsFromStorage() {
+    const stored = localStorage.getItem('fountainOfWiseman_attempts');
+    if (stored) {
+      try {
+        attempts = JSON.parse(stored);
+        return true;
+      } catch (e) {
+        console.log('Error loading stored attempts:', e);
+        attempts = [];
+      }
+    }
+    return false;
+  }
+
+  // Restore the UI from stored attempts
+  function restoreAttemptsUI() {
+    if (attempts.length === 0) return;
+
+    const tableBody = document.getElementById("attemptsTableBody");
+    const mobileContainer = document.getElementById("mobileAttemptsContainer");
+    
+    // Clear placeholder content
+    tableBody.innerHTML = '';
+    mobileContainer.innerHTML = '';
+
+    // Restore each attempt
+    attempts.forEach((attempt, index) => {
+      // Add to table
+      const newRow = document.createElement("tr");
+      newRow.innerHTML = `
+        <td>${attempt.arrangement}</td>
+        <td></td>
+        <td>${attempt.pleased}</td>
+        <td>${attempt.incorrect}</td>
+        <td>${attempt.unknown}</td>
+      `;
+      newRow.cells[1].appendChild(createVisualArrangement(attempt.arrangement));
+      tableBody.appendChild(newRow);
+
+      // Add mobile card
+      addMobileAttemptCard(
+        attempt.arrangement,
+        attempt.pleased,
+        attempt.incorrect,
+        attempt.unknown,
+        index + 1
+      );
+    });
+
+    // Generate suggestions based on stored attempts
+    generateSuggestions();
+  }
+
   // Update preview images when arrangement changes
   function updatePreview() {
     const arrangement = document
@@ -1333,6 +1392,9 @@ function wouldHaveValidArrangements(newAttempt) {
   function resetAllAttempts() {
     // Clear attempts array
     attempts = [];
+    
+    // Clear localStorage
+    localStorage.removeItem('fountainOfWiseman_attempts');
 
     // Reset table
     const tableBody = document.getElementById("attemptsTableBody");
@@ -1376,6 +1438,11 @@ function wouldHaveValidArrangements(newAttempt) {
 
   // Initialize everything once DOM is loaded
   document.addEventListener("DOMContentLoaded", function () {
+    // Load stored attempts
+    if (loadAttemptsFromStorage()) {
+      restoreAttemptsUI();
+    }
+    
     // Add event listener for real-time preview
     document
       .getElementById("arrangement")
@@ -1423,6 +1490,9 @@ function wouldHaveValidArrangements(newAttempt) {
 
         // Store attempt for analysis (only if valid)
         attempts.push(newAttempt);
+        
+        // Save to localStorage
+        saveAttemptsToStorage();
 
         const tableBody = document.getElementById("attemptsTableBody");
 
