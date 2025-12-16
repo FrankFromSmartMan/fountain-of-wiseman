@@ -362,8 +362,6 @@ Key mechanics:
         height: auto;
         float: right;
         margin: 0 0 20px 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         transition: transform 0.3s ease;
     }
     
@@ -719,9 +717,9 @@ Key mechanics:
             
             <div class="instruction-box">
                 <h3>How to Use This Tool:</h3>
-                <p><strong>1.</strong> Place offerings (Medal, Scroll, Wine, Food) in front of the 4 statues <br>
-                <strong>2.</strong> Have check the combination and enter the feedback received <br>
-                <strong>3.</strong> Use our smart suggestions to find the correct statue arrangement! (7 attempts max)</p>
+                <p><strong>1.</strong> Paste your offering arrangement (like SSMM) <br>
+                <strong>2.</strong> Enter the 3 number cues received from NPC.<br>
+                <strong>3.</strong> Hit "Add Attempt" to log your try and get suggestions.</p>
             </div>
             
             <form id="attemptsForm">
@@ -780,7 +778,7 @@ Key mechanics:
                     </tr>
                 </thead>
                 <tbody id="attemptsTableBody">
-                    <tr>
+                    <tr class="no-attempt-prompt">
                         <td colspan="5" style="text-align: center; color: #888; font-style: italic; padding: 30px;">No attempts yet - start by entering your first statue arrangement above!</td>
                     </tr>
                 </tbody>
@@ -788,7 +786,7 @@ Key mechanics:
             
             <!-- Mobile-friendly attempt cards -->
             <div class="mobile-table" id="mobileAttemptsContainer">
-                <div style="text-align: center; color: #888; font-style: italic; padding: 30px;">No attempts yet - start by entering your first statue arrangement above!</div>
+                <div class="no-attempt-prompt" style="text-align: center; color: #888; font-style: italic; padding: 30px;">No attempts yet - start by entering your first statue arrangement above!</div>
             </div>
         </section>
 
@@ -803,7 +801,7 @@ Key mechanics:
         </section>
     </main>
     <footer>
-        <p>&copy; 2024 Fountain of the Wiseman - GPQ Tool</p>
+        <p>&copy; 2025 Fountain of the Wiseman - GPQ Tool</p>
     </footer>
 </body>
 </html>
@@ -863,7 +861,7 @@ function addMobileAttemptCard(arrangement, pleased, incorrect, unknown, attemptN
     const container = document.getElementById('mobileAttemptsContainer');
     
     // Clear placeholder text on first attempt
-    if (attemptNumber === 1 && container.querySelector('div[style*="No attempts yet"]')) {
+    if (attemptNumber === 1 && container.querySelector('div[class="no-attempt-prompt"]')) {
         container.innerHTML = '';
     }
     
@@ -1062,11 +1060,11 @@ function resetAllAttempts() {
     
     // Reset table
     const tableBody = document.getElementById('attemptsTableBody');
-    tableBody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #888; font-style: italic; padding: 30px;">No attempts yet - start by entering your first statue arrangement above!</td></tr>';
+    tableBody.innerHTML = '<tr class="no-attempt-prompt"><td colspan="5" style="text-align: center; color: #888; font-style: italic; padding: 30px;">No attempts yet - start by entering your first statue arrangement above!</td></tr>';
     
     // Reset mobile cards
     const mobileContainer = document.getElementById('mobileAttemptsContainer');
-    mobileContainer.innerHTML = '<div style="text-align: center; color: #888; font-style: italic; padding: 30px;">No attempts yet - start by entering your first statue arrangement above!</div>';
+    mobileContainer.innerHTML = '<div class="no-attempt-prompt"style="text-align: center; color: #888; font-style: italic; padding: 30px;">No attempts yet - start by entering your first statue arrangement above!</div>';
     
     // Reset suggestions
     const suggestionsContainer = document.getElementById('suggestionsContainer');
