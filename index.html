@@ -758,12 +758,12 @@ Key mechanics:
     /* Step 2 Section with Speech Bubble */
     .step2-section {
       position: relative;
-      background: linear-gradient(135deg, #e8f4f8, #d1e7dd);
-      border: 2px solid #0f5132;
+      background: linear-gradient(135deg, #F5E6D3, #E8D5B7);
+      border: 2px solid #A0522D;
       border-radius: 15px;
       padding: 20px;
       margin: 20px 0;
-      box-shadow: 0 4px 15px rgba(15, 81, 50, 0.2);
+      box-shadow: 0 4px 15px rgba(160, 82, 45, 0.2);
     }
 
     /* Speech bubble pointer for desktop */
@@ -776,7 +776,7 @@ Key mechanics:
         width: 0;
         height: 0;
         border: 20px solid transparent;
-        border-left-color: #0f5132;
+        border-left-color: #A0522D;
         border-right: none;
         border-top: 15px solid transparent;
         border-bottom: 15px solid transparent;
@@ -790,7 +790,7 @@ Key mechanics:
         width: 0;
         height: 0;
         border: 18px solid transparent;
-        border-left-color: #e8f4f8;
+        border-left-color: #F5E6D3;
         border-right: none;
         border-top: 13px solid transparent;
         border-bottom: 13px solid transparent;
@@ -812,7 +812,7 @@ Key mechanics:
         width: 0;
         height: 0;
         border: 20px solid transparent;
-        border-bottom-color: #0f5132;
+        border-bottom-color: #A0522D;
         border-top: none;
         border-left: 15px solid transparent;
         border-right: 15px solid transparent;
@@ -827,7 +827,7 @@ Key mechanics:
         width: 0;
         height: 0;
         border: 18px solid transparent;
-        border-bottom-color: #e8f4f8;
+        border-bottom-color: #F5E6D3;
         border-top: none;
         border-left: 13px solid transparent;
         border-right: 13px solid transparent;
@@ -840,7 +840,7 @@ Key mechanics:
     }
 
     .step2-header {
-      background: linear-gradient(135deg, #0f5132, #198754);
+      background: linear-gradient(135deg, #8B4513, #A0522D);
       color: white;
       padding: 10px 15px;
       border-radius: 10px;
@@ -1026,7 +1026,7 @@ Key mechanics:
       </section>
 
       <section id="suggestions-section" class="suggestions-section">
-        <h2>💡 Smart Suggestions 💡</h2>
+        <h2>💡 Smart Suggestions</h2>
         <div id="suggestionsContainer">
           <div class="instruction-box">
             <h3>Get Started:</h3>
@@ -1233,7 +1233,21 @@ Key mechanics:
     return true;
   }
 
-  // Generate smart suggestions
+  // Check if a new attempt would result in any valid arrangements
+function wouldHaveValidArrangements(newAttempt) {
+    // Create temporary attempts array with the new attempt
+    const tempAttempts = [...attempts, newAttempt];
+    
+    const allArrangements = generateAllArrangements();
+    const validArrangements = allArrangements.filter(arr => 
+        isConsistentWithAttempts(arr, tempAttempts) && 
+        !tempAttempts.some(attempt => attempt.arrangement === arr)
+    );
+    
+    return validArrangements.length > 0;
+}
+
+// Generate smart suggestions
   function generateSuggestions() {
     if (attempts.length === 0) {
       document.getElementById("suggestionsContainer").innerHTML =
@@ -1259,8 +1273,13 @@ Key mechanics:
     container.innerHTML = "";
 
     if (validArrangements.length === 0) {
-      container.innerHTML =
-        "<p>No valid arrangements found. Check your feedback values!</p>";
+      container.innerHTML = `
+        <div style="background: linear-gradient(135deg, #fff3cd, #fce4aa); border: 2px solid #DAA520; border-radius: 10px; padding: 20px; margin: 20px 0;">
+            <h3 style="color: #8B4513; margin: 0 0 10px 0;">🤔 Hmm, something doesn't add up...</h3>
+            <p style="color: #8B4513; margin: 0;">Based on your previous attempts, no valid arrangements remain. This might mean there's an error in one of your feedback entries.</p>
+            <p style="color: #8B4513; margin: 10px 0 0 0;">💡 <strong>Suggestion:</strong> Try using the "Reset All Attempts" button and double-check your Step 2 numbers as you re-enter your attempts.</p>
+        </div>
+      `;
       return;
     }
 
@@ -1375,8 +1394,35 @@ Key mechanics:
         const incorrect = document.getElementById("incorrect").value || "0";
         const unknown = document.getElementById("unknown").value || "0";
 
-        // Store attempt for analysis
-        attempts.push({ arrangement, pleased, incorrect, unknown });
+        // Create the potential attempt object
+        const newAttempt = { arrangement, pleased, incorrect, unknown };
+        
+        // Check if this attempt would result in any valid arrangements
+        if (!wouldHaveValidArrangements(newAttempt)) {
+            // Show error message without storing the attempt
+            const container = document.getElementById("suggestionsContainer");
+            container.innerHTML = `
+                <div style="background: linear-gradient(135deg, #f8d7da, #f1b9bc); border: 2px solid #dc3545; border-radius: 10px; padding: 20px; margin: 20px 0;">
+                    <h3 style="color: #721c24; margin: 0 0 10px 0;">❌ No Valid Combinations Found</h3>
+                    <p style="color: #721c24; margin: 0;">The numbers you entered in <strong>Step 2</strong> don't match any possible statue arrangements. Please double-check:</p>
+                    <ul style="color: #721c24; margin: 10px 0;">
+                        <li># of Correct Offerings in Right Place: <strong>${pleased}</strong></li>
+                        <li># of Correct Offerings in Wrong Place: <strong>${incorrect}</strong></li>
+                        <li># of Wrong Offerings: <strong>${unknown}</strong></li>
+                    </ul>
+                    <p style="color: #721c24; margin: 10px 0 0 0;">💡 <em>Tip: Make sure these numbers add up to 4 and match the feedback you received from the NPC.</em></p>
+                </div>
+            `;
+            
+            // Scroll to the error message
+            document.getElementById("suggestions-section").scrollIntoView({ behavior: "smooth" });
+            
+            // Don't clear the form so user can easily correct their input
+            return;
+        }
+
+        // Store attempt for analysis (only if valid)
+        attempts.push(newAttempt);
 
         const tableBody = document.getElementById("attemptsTableBody");
 
