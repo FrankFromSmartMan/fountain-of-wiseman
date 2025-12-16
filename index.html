@@ -717,14 +717,14 @@ Key mechanics:
             
             <div class="instruction-box">
                 <h3>How to Use This Tool:</h3>
-                <p><strong>1.</strong> Paste your offering arrangement (like SSMM) <br>
-                <strong>2.</strong> Enter the 3 number cues received from NPC.<br>
-                <strong>3.</strong> Hit "Add Attempt" to log your try and get suggestions.</p>
+                <p><strong>Step 1.</strong> Paste your offering arrangement (like SSMM) <br>
+                <strong>Step 2.</strong> Enter the 3 number cues received from NPC.<br>
+                <strong>Step 3.</strong> Hit "Add Attempt" to log your try and get suggestions.</p>
             </div>
             
             <form id="attemptsForm">
                 <div class="form-group">
-                    <label for="arrangement">Offering Arrangement (F=Food, M=Medal, S=Scroll, W=Wine):</label>
+                    <label for="arrangement"><strong>Step 1:</strong> Offering Arrangement (F=Food, M=Medal, S=Scroll, W=Wine):</label>
                     <input type="text" id="arrangement" name="arrangement" maxlength="4"    
                            placeholder="FMSW" autocomplete="off" style="text-transform: uppercase;">
                     <div class="input-hint">Enter 4 letters for your statue arrangement (e.g., FMSW = Food-Medal-Scroll-Wine)</div>
@@ -741,7 +741,7 @@ Key mechanics:
                 </div>
                 
                 <div class="form-group">
-                    <label for="pleased"># of Correct Offerings in Right Place:</label>
+                    <label for="pleased"><strong>Step 2:</strong> # of Correct Offerings in Right Place:</label>
                     <input type="number" id="pleased" name="pleased" min="0" max="4" value="0" required>
                     <div class="input-hint">How many offerings are the correct type AND in the correct statue position?</div>
                 </div>
@@ -759,7 +759,7 @@ Key mechanics:
                 </div>
                 
                 <div class="button-container">
-                    <button type="submit">Add Attempt</button>
+                    <button type="submit"><strong>Step 3:</strong> Add Attempt</button>
                     <button type="button" id="resetButton" style="background: linear-gradient(135deg, #636363, #777777);">Reset All Attempts</button>
                 </div>
             </form>
@@ -801,7 +801,7 @@ Key mechanics:
         </section>
     </main>
     <footer>
-        <p>&copy; 2025 Fountain of the Wiseman - GPQ Tool</p>
+        <p>&copy; 2025 Fountain of the Wiseman - GPQ Tool | Made by OreoNinja</p>
     </footer>
 </body>
 </html>
