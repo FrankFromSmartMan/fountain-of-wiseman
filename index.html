@@ -758,8 +758,8 @@ Key mechanics:
     /* Step 2 Section with Speech Bubble */
     .step2-section {
       position: relative;
-      background: linear-gradient(135deg, #F5E6D3, #E8D5B7);
-      border: 2px solid #A0522D;
+      background: linear-gradient(135deg, #f5e6d3, #e8d5b7);
+      border: 2px solid #a0522d;
       border-radius: 15px;
       padding: 20px;
       margin: 20px 0;
@@ -776,7 +776,7 @@ Key mechanics:
         width: 0;
         height: 0;
         border: 20px solid transparent;
-        border-left-color: #A0522D;
+        border-left-color: #a0522d;
         border-right: none;
         border-top: 15px solid transparent;
         border-bottom: 15px solid transparent;
@@ -790,12 +790,12 @@ Key mechanics:
         width: 0;
         height: 0;
         border: 18px solid transparent;
-        border-left-color: #F5E6D3;
+        border-left-color: #f5e6d3;
         border-right: none;
         border-top: 13px solid transparent;
         border-bottom: 13px solid transparent;
       }
-      
+
       .step2-section {
         margin-right: 140px;
       }
@@ -812,7 +812,7 @@ Key mechanics:
         width: 0;
         height: 0;
         border: 20px solid transparent;
-        border-bottom-color: #A0522D;
+        border-bottom-color: #a0522d;
         border-top: none;
         border-left: 15px solid transparent;
         border-right: 15px solid transparent;
@@ -827,7 +827,7 @@ Key mechanics:
         width: 0;
         height: 0;
         border: 18px solid transparent;
-        border-bottom-color: #F5E6D3;
+        border-bottom-color: #f5e6d3;
         border-top: none;
         border-left: 13px solid transparent;
         border-right: 13px solid transparent;
@@ -840,7 +840,7 @@ Key mechanics:
     }
 
     .step2-header {
-      background: linear-gradient(135deg, #8B4513, #A0522D);
+      background: linear-gradient(135deg, #8b4513, #a0522d);
       color: white;
       padding: 10px 15px;
       border-radius: 10px;
@@ -931,9 +931,7 @@ Key mechanics:
             </div>
 
             <div class="form-group">
-              <label for="incorrect"
-                ># of Incorrect Offerings:</label
-              >
+              <label for="incorrect"># of Incorrect Offerings:</label>
               <input
                 type="number"
                 id="incorrect"
@@ -976,7 +974,19 @@ Key mechanics:
           </div>
         </form>
       </section>
-
+      <section id="suggestions-section" class="suggestions-section">
+        <h2>💡 Smart Suggestions</h2>
+        <div id="suggestionsContainer">
+          <div class="instruction-box">
+            <h3>Get Started:</h3>
+            <p>
+              Enter your first attempt above and I'll analyze the feedback to
+              suggest the most likely statue arrangements! Remember: you only
+              have 7 attempts before mobs spawn.
+            </p>
+          </div>
+        </div>
+      </section>
       <section id="attempts-list">
         <h2>Attempt History</h2>
         <table>
@@ -1023,20 +1033,6 @@ Key mechanics:
           </div>
         </div>
       </section>
-
-      <section id="suggestions-section" class="suggestions-section">
-        <h2>💡 Smart Suggestions</h2>
-        <div id="suggestionsContainer">
-          <div class="instruction-box">
-            <h3>Get Started:</h3>
-            <p>
-              Enter your first attempt above and I'll analyze the feedback to
-              suggest the most likely statue arrangements! Remember: you only
-              have 7 attempts before mobs spawn.
-            </p>
-          </div>
-        </div>
-      </section>
     </main>
     <footer>
       <p>&copy; 2025 Fountain of the Wiseman - GPQ Tool | Made by OreoNinja</p>
@@ -1058,18 +1054,21 @@ Key mechanics:
 
   // Save attempts to localStorage
   function saveAttemptsToStorage() {
-    localStorage.setItem('fountainOfWiseman_attempts', JSON.stringify(attempts));
+    localStorage.setItem(
+      "fountainOfWiseman_attempts",
+      JSON.stringify(attempts)
+    );
   }
 
   // Load attempts from localStorage
   function loadAttemptsFromStorage() {
-    const stored = localStorage.getItem('fountainOfWiseman_attempts');
+    const stored = localStorage.getItem("fountainOfWiseman_attempts");
     if (stored) {
       try {
         attempts = JSON.parse(stored);
         return true;
       } catch (e) {
-        console.log('Error loading stored attempts:', e);
+        console.log("Error loading stored attempts:", e);
         attempts = [];
       }
     }
@@ -1082,10 +1081,10 @@ Key mechanics:
 
     const tableBody = document.getElementById("attemptsTableBody");
     const mobileContainer = document.getElementById("mobileAttemptsContainer");
-    
+
     // Clear placeholder content
-    tableBody.innerHTML = '';
-    mobileContainer.innerHTML = '';
+    tableBody.innerHTML = "";
+    mobileContainer.innerHTML = "";
 
     // Restore each attempt
     attempts.forEach((attempt, index) => {
@@ -1292,20 +1291,21 @@ Key mechanics:
   }
 
   // Check if a new attempt would result in any valid arrangements
-function wouldHaveValidArrangements(newAttempt) {
+  function wouldHaveValidArrangements(newAttempt) {
     // Create temporary attempts array with the new attempt
     const tempAttempts = [...attempts, newAttempt];
-    
-    const allArrangements = generateAllArrangements();
-    const validArrangements = allArrangements.filter(arr => 
-        isConsistentWithAttempts(arr, tempAttempts) && 
-        !tempAttempts.some(attempt => attempt.arrangement === arr)
-    );
-    
-    return validArrangements.length > 0;
-}
 
-// Generate smart suggestions
+    const allArrangements = generateAllArrangements();
+    const validArrangements = allArrangements.filter(
+      (arr) =>
+        isConsistentWithAttempts(arr, tempAttempts) &&
+        !tempAttempts.some((attempt) => attempt.arrangement === arr)
+    );
+
+    return validArrangements.length > 0;
+  }
+
+  // Generate smart suggestions
   function generateSuggestions() {
     if (attempts.length === 0) {
       document.getElementById("suggestionsContainer").innerHTML =
@@ -1391,9 +1391,9 @@ function wouldHaveValidArrangements(newAttempt) {
   function resetAllAttempts() {
     // Clear attempts array
     attempts = [];
-    
+
     // Clear localStorage
-    localStorage.removeItem('fountainOfWiseman_attempts');
+    localStorage.removeItem("fountainOfWiseman_attempts");
 
     // Reset table
     const tableBody = document.getElementById("attemptsTableBody");
@@ -1441,7 +1441,7 @@ function wouldHaveValidArrangements(newAttempt) {
     if (loadAttemptsFromStorage()) {
       restoreAttemptsUI();
     }
-    
+
     // Add event listener for real-time preview
     document
       .getElementById("arrangement")
@@ -1462,12 +1462,12 @@ function wouldHaveValidArrangements(newAttempt) {
 
         // Create the potential attempt object
         const newAttempt = { arrangement, pleased, incorrect, unknown };
-        
+
         // Check if this attempt would result in any valid arrangements
         if (!wouldHaveValidArrangements(newAttempt)) {
-            // Show error message without storing the attempt
-            const container = document.getElementById("suggestionsContainer");
-            container.innerHTML = `
+          // Show error message without storing the attempt
+          const container = document.getElementById("suggestionsContainer");
+          container.innerHTML = `
                 <div style="background: linear-gradient(135deg, #f8d7da, #f1b9bc); border: 2px solid #dc3545; border-radius: 10px; padding: 20px; margin: 20px 0;">
                     <h3 style="color: #721c24; margin: 0 0 10px 0;">❌ No Valid Combinations Found</h3>
                     <p style="color: #721c24; margin: 0;">The numbers you entered in <strong>Step 2</strong> don't match any possible statue arrangements. Please double-check:</p>
@@ -1479,17 +1479,19 @@ function wouldHaveValidArrangements(newAttempt) {
                     <p style="color: #721c24; margin: 10px 0 0 0;">💡 <em>Tip: Make sure these numbers add up to 4 and match the feedback you received from the NPC.</em></p>
                 </div>
             `;
-            
-            // Scroll to the error message
-            document.getElementById("suggestions-section").scrollIntoView({ behavior: "smooth" });
-            
-            // Don't clear the form so user can easily correct their input
-            return;
+
+          // Scroll to the error message
+          document
+            .getElementById("suggestions-section")
+            .scrollIntoView({ behavior: "smooth" });
+
+          // Don't clear the form so user can easily correct their input
+          return;
         }
 
         // Store attempt for analysis (only if valid)
         attempts.push(newAttempt);
-        
+
         // Save to localStorage
         saveAttemptsToStorage();
 
