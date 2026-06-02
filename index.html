@@ -16,6 +16,14 @@ Key mechanics:
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Fountain of the Wiseman - GPQ Tool</title>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
   </head>
   <style>
     * {
@@ -1002,552 +1010,350 @@ Key mechanics:
             </tr>
           </tbody>
         </table>
-
-        <!-- Mobile-friendly attempt cards -->
-        <div class="mobile-table" id="mobileAttemptsContainer">
-          <div
-            class="no-attempt-prompt"
-            style="
-              text-align: center;
-              color: #888;
-              font-style: italic;
-              padding: 30px;
-            "
-          >
-            No attempts yet - start by entering your first statue arrangement
-            above!
-          </div>
-        </div>
+        <div class="mobile-table" id="mobileAttempts"></div>
       </section>
     </main>
     <footer>
-      <p>&copy; 2025 Fountain of the Wiseman - GPQ Tool | Made by OreoNinja</p>
+      <p>
+        💡 Tip: Use the suggestions to make informed guesses and solve the
+        puzzle before the mobs arrive!
+      </p>
     </footer>
-  </body>
-</html>
 
-<script>
-  // ETC to image mapping
-  const etcImages = {
-    F: "images/food.png",
-    M: "images/medal.png",
-    S: "images/scroll.png",
-    W: "images/wine.gif",
-  };
-
-  // Store all attempts for analysis
-  let attempts = [];
-
-  // Save attempts to localStorage
-  function saveAttemptsToStorage() {
-    localStorage.setItem(
-      "fountainOfWiseman_attempts",
-      JSON.stringify(attempts)
-    );
-  }
-
-  // Load attempts from localStorage
-  function loadAttemptsFromStorage() {
-    const stored = localStorage.getItem("fountainOfWiseman_attempts");
-    if (stored) {
-      try {
-        attempts = JSON.parse(stored);
-        return true;
-      } catch (e) {
-        console.log("Error loading stored attempts:", e);
-        attempts = [];
-      }
-    }
-    return false;
-  }
-
-  // Restore the UI from stored attempts
-  function restoreAttemptsUI() {
-    if (attempts.length === 0) return;
-
-    const tableBody = document.getElementById("attemptsTableBody");
-    const mobileContainer = document.getElementById("mobileAttemptsContainer");
-
-    // Clear placeholder content
-    tableBody.innerHTML = "";
-    mobileContainer.innerHTML = "";
-
-    // Restore each attempt
-    attempts.forEach((attempt, index) => {
-      // Add to table
-      const newRow = document.createElement("tr");
-      newRow.innerHTML = `
-        <td>${attempt.arrangement}</td>
-        <td></td>
-        <td>${attempt.pleased}</td>
-        <td>${attempt.incorrect}</td>
-        <td>${attempt.unknown}</td>
-      `;
-      newRow.cells[1].appendChild(createVisualArrangement(attempt.arrangement));
-      tableBody.appendChild(newRow);
-
-      // Add mobile card
-      addMobileAttemptCard(
-        attempt.arrangement,
-        attempt.pleased,
-        attempt.incorrect,
-        attempt.unknown,
-        index + 1
+    <script>
+      const arrangementInput = document.getElementById("arrangement");
+      const pleasedInput = document.getElementById("pleased");
+      const incorrectInput = document.getElementById("incorrect");
+      const unknownInput = document.getElementById("unknown");
+      const attemptsForm = document.getElementById("attemptsForm");
+      const attemptsTableBody = document.getElementById("attemptsTableBody");
+      const resetButton = document.getElementById("resetButton");
+      const suggestionsContainer = document.getElementById(
+        "suggestionsContainer"
       );
-    });
+      const previewImages = document.getElementById("previewImages");
+      const mobileAttempts = document.getElementById("mobileAttempts");
 
-    // Generate suggestions based on stored attempts
-    generateSuggestions();
-  }
+      const offerings = {
+        F: { name: "Food", image: "images/food.gif", letter: "F" },
+        M: { name: "Medal", image: "images/medal.gif", letter: "M" },
+        S: { name: "Scroll", image: "images/scroll.gif", letter: "S" },
+        W: { name: "Wine", image: "images/wine.gif", letter: "W" },
+      };
 
-  // Update preview images when arrangement changes
-  function updatePreview() {
-    const arrangement = document
-      .getElementById("arrangement")
-      .value.toUpperCase();
-    const previewContainer = document.getElementById("previewImages");
-    previewContainer.innerHTML = "";
+      let attempts = [];
 
-    for (let i = 0; i < 4; i++) {
-      const letter = arrangement[i];
-      if (letter && etcImages[letter]) {
-        const img = document.createElement("img");
-        img.src = etcImages[letter];
-        img.alt = letter;
-        img.className = "preview-image";
-        img.title = `Position ${i + 1}: ${letter}`;
-        previewContainer.appendChild(img);
-      }
-    }
-  }
-
-  // Create visual arrangement for table
-  function createVisualArrangement(arrangement) {
-    const visualDiv = document.createElement("div");
-    visualDiv.className = "table-arrangement";
-
-    for (let letter of arrangement) {
-      if (etcImages[letter]) {
-        const img = document.createElement("img");
-        img.src = etcImages[letter];
-        img.alt = letter;
-        img.className = "table-etc-image";
-        img.title = letter;
-        visualDiv.appendChild(img);
-      }
-    }
-
-    return visualDiv;
-  }
-
-  // Add mobile attempt card
-  function addMobileAttemptCard(
-    arrangement,
-    pleased,
-    incorrect,
-    unknown,
-    attemptNumber
-  ) {
-    const container = document.getElementById("mobileAttemptsContainer");
-
-    // Clear placeholder text on first attempt
-    if (
-      attemptNumber === 1 &&
-      container.querySelector('div[class="no-attempt-prompt"]')
-    ) {
-      container.innerHTML = "";
-    }
-
-    const card = document.createElement("div");
-    card.className = "attempt-card";
-
-    const header = document.createElement("div");
-    header.className = "attempt-card-header";
-
-    const attemptNum = document.createElement("div");
-    attemptNum.className = "attempt-number";
-    attemptNum.textContent = `Attempt #${attemptNumber}`;
-
-    const arrangementText = document.createElement("div");
-    arrangementText.className = "attempt-arrangement";
-    arrangementText.textContent = arrangement;
-
-    header.appendChild(attemptNum);
-    header.appendChild(arrangementText);
-
-    const visual = document.createElement("div");
-    visual.className = "attempt-visual";
-    visual.appendChild(createVisualArrangement(arrangement));
-
-    const feedback = document.createElement("div");
-    feedback.className = "attempt-feedback";
-
-    const pleasedDiv = document.createElement("div");
-    pleasedDiv.className = "feedback-item pleased";
-    pleasedDiv.innerHTML = `<div class="feedback-label">Right Place</div><div class="feedback-value">${pleased}</div>`;
-
-    const incorrectDiv = document.createElement("div");
-    incorrectDiv.className = "feedback-item incorrect";
-    incorrectDiv.innerHTML = `<div class="feedback-label">Wrong Place</div><div class="feedback-value">${incorrect}</div>`;
-
-    const unknownDiv = document.createElement("div");
-    unknownDiv.className = "feedback-item unknown";
-    unknownDiv.innerHTML = `<div class="feedback-label">Wrong Offering</div><div class="feedback-value">${unknown}</div>`;
-
-    feedback.appendChild(pleasedDiv);
-    feedback.appendChild(incorrectDiv);
-    feedback.appendChild(unknownDiv);
-
-    card.appendChild(header);
-    card.appendChild(visual);
-    card.appendChild(feedback);
-
-    container.appendChild(card);
-  }
-
-  // Generate all possible arrangements
-  function generateAllArrangements() {
-    const etcs = ["F", "M", "S", "W"];
-    const arrangements = [];
-
-    // Generate all combinations with repetition allowed (4^4 = 256 total)
-    for (let i = 0; i < 4; i++) {
-      for (let j = 0; j < 4; j++) {
-        for (let k = 0; k < 4; k++) {
-          for (let l = 0; l < 4; l++) {
-            arrangements.push(etcs[i] + etcs[j] + etcs[k] + etcs[l]);
-          }
-        }
-      }
-    }
-
-    return arrangements;
-  }
-
-  // Check if arrangement is consistent with previous attempts
-  function isConsistentWithAttempts(arrangement, attempts) {
-    for (let attempt of attempts) {
-      const pleased = parseInt(attempt.pleased);
-      const incorrect = parseInt(attempt.incorrect);
-      const unknown = parseInt(attempt.unknown);
-
-      let actualPleased = 0;
-      let actualIncorrect = 0;
-
-      // Count pleased (correct position and correct item)
-      for (let i = 0; i < 4; i++) {
-        if (arrangement[i] === attempt.arrangement[i]) {
-          actualPleased++;
+      // Load attempts from localStorage
+      function loadAttempts() {
+        const saved = localStorage.getItem("fountainAttempts");
+        if (saved) {
+          attempts = JSON.parse(saved);
+          renderAttempts();
+          generateSuggestions();
         }
       }
 
-      // Count incorrect (correct item but wrong position)
-      let tempArrangement = arrangement.split("");
-      let tempAttempt = attempt.arrangement.split("");
-
-      // Remove correct positions from both arrays
-      for (let i = 3; i >= 0; i--) {
-        if (tempArrangement[i] === tempAttempt[i]) {
-          tempArrangement.splice(i, 1);
-          tempAttempt.splice(i, 1);
-        }
+      // Save attempts to localStorage
+      function saveAttempts() {
+        localStorage.setItem("fountainAttempts", JSON.stringify(attempts));
       }
 
-      // Count how many items from attempt are in the remaining arrangement
-      for (let letter of tempAttempt) {
-        const index = tempArrangement.indexOf(letter);
-        if (index !== -1) {
-          actualIncorrect++;
-          tempArrangement.splice(index, 1);
-        }
+      // Render preview as user types
+      arrangementInput.addEventListener("input", (e) => {
+        const value = e.target.value.toUpperCase().slice(0, 4);
+        arrangementInput.value = value;
+        updatePreview(value);
+      });
+
+      // Update preview images
+      function updatePreview(arrangement) {
+        const positions = [0, 1, 2, 3];
+        previewImages.innerHTML = positions
+          .map((index) => {
+            if (index < arrangement.length) {
+              const letter = arrangement[index];
+              if (offerings[letter]) {
+                return `<img src="${offerings[letter].image}" class="preview-image" alt="${offerings[letter].name}" title="${offerings[letter].name}">`;
+              }
+            }
+            return `<div class="preview-placeholder">${index + 1}</div>`;
+          })
+          .join("");
       }
 
-      // Unknown is total minus pleased minus incorrect
-      const actualUnknown = 4 - actualPleased - actualIncorrect;
+      // Handle form submission
+      attemptsForm.addEventListener("submit", (e) => {
+        e.preventDefault();
 
-      if (
-        actualPleased !== pleased ||
-        actualIncorrect !== incorrect ||
-        actualUnknown !== unknown
-      ) {
-        return false;
-      }
-    }
-    return true;
-  }
+        const arrangement = arrangementInput.value.toUpperCase();
+        const pleased = parseInt(pleasedInput.value);
+        const incorrect = parseInt(incorrectInput.value);
+        const unknown = parseInt(unknownInput.value);
 
-  // Check if a new attempt would result in any valid arrangements
-  function wouldHaveValidArrangements(newAttempt) {
-    // Create temporary attempts array with the new attempt
-    const tempAttempts = [...attempts, newAttempt];
-
-    const allArrangements = generateAllArrangements();
-    const validArrangements = allArrangements.filter(
-      (arr) =>
-        isConsistentWithAttempts(arr, tempAttempts) &&
-        !tempAttempts.some((attempt) => attempt.arrangement === arr)
-    );
-
-    return validArrangements.length > 0;
-  }
-
-  // Generate smart suggestions
-  function generateSuggestions() {
-    if (attempts.length === 0) {
-      document.getElementById("suggestionsContainer").innerHTML =
-        "<p>Try some statue arrangements to get smart suggestions based on feedback!</p>";
-      return;
-    }
-
-    console.log("Attempts:", attempts); // Debug log
-
-    const allArrangements = generateAllArrangements();
-    const validArrangements = allArrangements.filter(
-      (arr) =>
-        isConsistentWithAttempts(arr, attempts) &&
-        !attempts.some((attempt) => attempt.arrangement === arr)
-    );
-
-    console.log("Valid arrangements found:", validArrangements.length); // Debug log
-    if (validArrangements.length < 10) {
-      console.log("Valid arrangements:", validArrangements); // Debug log
-    }
-
-    const container = document.getElementById("suggestionsContainer");
-    container.innerHTML = "";
-
-    if (validArrangements.length === 0) {
-      container.innerHTML = `
-        <div style="background: linear-gradient(135deg, #fff3cd, #fce4aa); border: 2px solid #DAA520; border-radius: 10px; padding: 20px; margin: 20px 0;">
-            <h3 style="color: #8B4513; margin: 0 0 10px 0;">🤔 Hmm, something doesn't add up...</h3>
-            <p style="color: #8B4513; margin: 0;">Based on your previous attempts, no valid arrangements remain. This might mean there's an error in one of your feedback entries.</p>
-            <p style="color: #8B4513; margin: 10px 0 0 0;">💡 <strong>Suggestion:</strong> Try using the "Reset All Attempts" button and double-check your Step 2 numbers as you re-enter your attempts.</p>
-        </div>
-      `;
-      return;
-    }
-
-    if (validArrangements.length === 1) {
-      container.innerHTML = "<p><strong>Statue combination found!</strong></p>";
-    } else {
-      container.innerHTML = `<p><strong>Possible Statue Arrangements (${validArrangements.length} possibilities):</strong></p>`;
-    }
-
-    // Show top 5 suggestions
-    const topSuggestions = validArrangements.slice(0, 5);
-
-    topSuggestions.forEach((arrangement) => {
-      const suggestionDiv = document.createElement("div");
-      suggestionDiv.className = "suggestion-item";
-
-      const leftDiv = document.createElement("div");
-      leftDiv.style.display = "flex";
-      leftDiv.style.alignItems = "center";
-
-      const visualDiv = document.createElement("div");
-      visualDiv.className = "suggestion-arrangement";
-
-      for (let letter of arrangement) {
-        const img = document.createElement("img");
-        img.src = etcImages[letter];
-        img.alt = letter;
-        img.className = "suggestion-image";
-        visualDiv.appendChild(img);
-      }
-
-      const textDiv = document.createElement("div");
-      textDiv.className = "suggestion-text";
-      textDiv.textContent = arrangement;
-
-      leftDiv.appendChild(visualDiv);
-      leftDiv.appendChild(textDiv);
-
-      const button = document.createElement("button");
-      button.className = "apply-suggestion";
-      button.textContent = "Try This Combo";
-      button.onclick = () => applySuggestion(arrangement);
-
-      suggestionDiv.appendChild(leftDiv);
-      suggestionDiv.appendChild(button);
-      container.appendChild(suggestionDiv);
-    });
-  }
-
-  // Reset all attempts and clear the interface
-  function resetAllAttempts() {
-    // Clear attempts array
-    attempts = [];
-
-    // Clear localStorage
-    localStorage.removeItem("fountainOfWiseman_attempts");
-
-    // Reset table
-    const tableBody = document.getElementById("attemptsTableBody");
-    tableBody.innerHTML =
-      '<tr class="no-attempt-prompt"><td colspan="5" style="text-align: center; color: #888; font-style: italic; padding: 30px;">No attempts yet - start by entering your first statue arrangement above!</td></tr>';
-
-    // Reset mobile cards
-    const mobileContainer = document.getElementById("mobileAttemptsContainer");
-    mobileContainer.innerHTML =
-      '<div class="no-attempt-prompt"style="text-align: center; color: #888; font-style: italic; padding: 30px;">No attempts yet - start by entering your first statue arrangement above!</div>';
-
-    // Reset suggestions
-    const suggestionsContainer = document.getElementById(
-      "suggestionsContainer"
-    );
-    suggestionsContainer.innerHTML =
-      '<div class="instruction-box"><h3>Get Started:</h3><p>Enter your first attempt above and I\'ll analyze the feedback to suggest the most likely statue arrangements! Remember: you only have 7 attempts before mobs spawn.</p></div>';
-
-    // Reset form
-    document.getElementById("attemptsForm").reset();
-    updatePreview();
-
-    console.log("All attempts reset"); // Debug log
-  }
-
-  // Apply a suggestion to the form
-  function applySuggestion(arrangement) {
-    document.getElementById("arrangement").value = arrangement;
-    updatePreview();
-
-    // Scroll to form for next attempt
-    document
-      .getElementById("attempt-form")
-      .scrollIntoView({ behavior: "smooth" });
-
-    // Focus on the first feedback field
-    setTimeout(() => {
-      document.getElementById("pleased").focus();
-    }, 500);
-  }
-
-  // Initialize everything once DOM is loaded
-  document.addEventListener("DOMContentLoaded", function () {
-    // Load stored attempts
-    if (loadAttemptsFromStorage()) {
-      restoreAttemptsUI();
-    }
-
-    // Add event listener for real-time preview
-    document
-      .getElementById("arrangement")
-      .addEventListener("input", updatePreview);
-
-    // Form submission handler
-    document
-      .getElementById("attemptsForm")
-      .addEventListener("submit", function (event) {
-        event.preventDefault();
-
-        const arrangement = document
-          .getElementById("arrangement")
-          .value.toUpperCase();
-        const pleased = document.getElementById("pleased").value || "0";
-        const incorrect = document.getElementById("incorrect").value || "0";
-        const unknown = document.getElementById("unknown").value || "0";
-
-        // Create the potential attempt object
-        const newAttempt = { arrangement, pleased, incorrect, unknown };
-
-        // Check if this attempt would result in any valid arrangements
-        if (!wouldHaveValidArrangements(newAttempt)) {
-          // Show error message without storing the attempt
-          const container = document.getElementById("suggestionsContainer");
-          container.innerHTML = `
-                <div style="background: linear-gradient(135deg, #f8d7da, #f1b9bc); border: 2px solid #dc3545; border-radius: 10px; padding: 20px; margin: 20px 0;">
-                    <h3 style="color: #721c24; margin: 0 0 10px 0;">❌ No Valid Combinations Found</h3>
-                    <p style="color: #721c24; margin: 0;">The numbers you entered in <strong>Step 2</strong> don't match any possible statue arrangements. Please double-check:</p>
-                    <ul style="color: #721c24; margin: 10px 0;">
-                        <li># of Correct Offerings in Right Place: <strong>${pleased}</strong></li>
-                        <li># of Correct Offerings in Wrong Place: <strong>${incorrect}</strong></li>
-                        <li># of Wrong Offerings: <strong>${unknown}</strong></li>
-                    </ul>
-                    <p style="color: #721c24; margin: 10px 0 0 0;">💡 <em>Tip: Make sure these numbers add up to 4 and match the feedback you received from the NPC.</em></p>
-                </div>
-            `;
-
-          // Scroll to the error message
-          document
-            .getElementById("suggestions-section")
-            .scrollIntoView({ behavior: "smooth" });
-
-          // Don't clear the form so user can easily correct their input
+        if (
+          arrangement.length !== 4 ||
+          ![...arrangement].every((c) => "FMSW".includes(c))
+        ) {
+          alert("Please enter a valid 4-letter arrangement (F, M, S, W)");
           return;
         }
 
-        // Store attempt for analysis (only if valid)
-        attempts.push(newAttempt);
-
-        // Save to localStorage
-        saveAttemptsToStorage();
-
-        const tableBody = document.getElementById("attemptsTableBody");
-
-        // Clear the placeholder row if this is the first attempt
-        if (
-          attempts.length === 1 &&
-          tableBody.querySelector('td[colspan="5"]')
-        ) {
-          tableBody.innerHTML = "";
+        if (pleased + incorrect + unknown > 4) {
+          alert("Total feedback cannot exceed 4 offerings");
+          return;
         }
 
-        const newRow = document.createElement("tr");
-
-        const visualCell = document.createElement("td");
-        visualCell.appendChild(createVisualArrangement(arrangement));
-
-        newRow.innerHTML = `
-            <td>${arrangement}</td>
-            <td></td>
-            <td>${pleased}</td>
-            <td>${incorrect}</td>
-            <td>${unknown}</td>
-        `;
-
-        // Replace the empty visual cell
-        newRow.cells[1].appendChild(createVisualArrangement(arrangement));
-
-        tableBody.appendChild(newRow);
-
-        // Add mobile card
-        addMobileAttemptCard(
+        const attempt = {
           arrangement,
           pleased,
           incorrect,
           unknown,
-          attempts.length
-        );
+          timestamp: new Date().toLocaleString(),
+        };
 
-        // Generate new suggestions
+        attempts.push(attempt);
+        saveAttempts();
+
+        attemptsForm.reset();
+        previewImages.innerHTML = `
+          <div class="preview-placeholder">1</div>
+          <div class="preview-placeholder">2</div>
+          <div class="preview-placeholder">3</div>
+          <div class="preview-placeholder">4</div>
+        `;
+
+        renderAttempts();
         generateSuggestions();
-
-        // Clear form fields and reset preview
-        document.getElementById("attemptsForm").reset();
-        updatePreview();
-
-        // Scroll to feedback section
-        document
-          .getElementById("suggestions-section")
-          .scrollIntoView({ behavior: "smooth" });
       });
 
-    // Add event listener for reset button
-    document
-      .getElementById("resetButton")
-      .addEventListener("click", function () {
-        if (
-          confirm(
-            "Are you sure you want to reset all attempts? This cannot be undone."
-          )
-        ) {
-          resetAllAttempts();
+      // Render attempts table
+      function renderAttempts() {
+        if (attempts.length === 0) {
+          attemptsTableBody.innerHTML = `
+            <tr class="no-attempt-prompt">
+              <td colspan="5" style="text-align: center; color: #888; font-style: italic; padding: 30px;">
+                No attempts yet - start by entering your first statue arrangement above!
+              </td>
+            </tr>
+          `;
+          mobileAttempts.innerHTML = "";
+          return;
+        }
+
+        attemptsTableBody.innerHTML = attempts
+          .map((attempt, index) => {
+            const arrangement = attempt.arrangement;
+            const images = [
+              ...arrangement,
+            ].map(
+              (letter) =>
+                `<img src="${offerings[letter].image}" class="table-etc-image" alt="${offerings[letter].name}" title="${offerings[letter].name}">`
+            );
+
+            return `
+              <tr>
+                <td><strong>${arrangement}</strong></td>
+                <td>
+                  <div class="table-arrangement">
+                    ${images.join("")}
+                  </div>
+                </td>
+                <td style="background-color: #d4edda; font-weight: bold; color: #155724;">${attempt.pleased}</td>
+                <td style="background-color: #fff3cd; font-weight: bold; color: #856404;">${attempt.incorrect}</td>
+                <td style="background-color: #f8d7da; font-weight: bold; color: #721c24;">${attempt.unknown}</td>
+              </tr>
+            `;
+          })
+          .join("");
+
+        // Mobile view
+        mobileAttempts.innerHTML = attempts
+          .map((attempt, index) => {
+            const arrangement = attempt.arrangement;
+            const images = [
+              ...arrangement,
+            ].map(
+              (letter) =>
+                `<img src="${offerings[letter].image}" class="table-etc-image" alt="${offerings[letter].name}" title="${offerings[letter].name}">`
+            );
+
+            return `
+              <div class="attempt-card">
+                <div class="attempt-card-header">
+                  <div class="attempt-number">Attempt ${index + 1}</div>
+                  <div class="attempt-arrangement">${arrangement}</div>
+                </div>
+                <div class="attempt-visual">
+                  <div class="table-arrangement">${images.join("")}</div>
+                </div>
+                <div class="attempt-feedback">
+                  <div class="feedback-item pleased">
+                    <div class="feedback-label">Right Place</div>
+                    <div class="feedback-value">${attempt.pleased}</div>
+                  </div>
+                  <div class="feedback-item incorrect">
+                    <div class="feedback-label">Wrong Place</div>
+                    <div class="feedback-value">${attempt.incorrect}</div>
+                  </div>
+                  <div class="feedback-item unknown">
+                    <div class="feedback-label">Wrong Offering</div>
+                    <div class="feedback-value">${attempt.unknown}</div>
+                  </div>
+                </div>
+              </div>
+            `;
+          })
+          .join("");
+      }
+
+      // Generate suggestions based on constraints
+      function generateSuggestions() {
+        if (attempts.length === 0) {
+          suggestionsContainer.innerHTML = `
+            <div class="instruction-box">
+              <h3>Get Started:</h3>
+              <p>
+                Enter your first attempt above and I'll analyze the feedback to
+                suggest the most likely statue arrangements! Remember: you only
+                have 7 attempts before mobs spawn.
+              </p>
+            </div>
+          `;
+          return;
+        }
+
+        const allCombinations = generateAllCombinations();
+        const validCombinations = allCombinations.filter((combo) =>
+          isValidCombo(combo)
+        );
+
+        if (validCombinations.length === 0) {
+          suggestionsContainer.innerHTML =
+            '<div class="instruction-box"><h3>No Valid Combinations</h3><p>The feedback seems contradictory. Please review your entries.</p></div>';
+          return;
+        }
+
+        const topSuggestions = validCombinations.slice(0, 5);
+
+        suggestionsContainer.innerHTML =
+          '<h2 style="margin-bottom: 20px;">🎯 Top Suggestions</h2>' +
+          topSuggestions
+            .map((combo) => {
+              const images = [
+                ...combo,
+              ].map(
+                (letter) =>
+                  `<img src="${offerings[letter].image}" class="suggestion-image" alt="${offerings[letter].name}" title="${offerings[letter].name}">`
+              );
+
+              return `
+                <div class="suggestion-item">
+                  <div class="suggestion-arrangement">
+                    ${images.join("")}
+                    <div class="suggestion-text"><strong>${combo}</strong></div>
+                  </div>
+                  <button type="button" class="apply-suggestion" onclick="applySuggestion('${combo}')">Try This</button>
+                </div>
+              `;
+            })
+            .join("");
+      }
+
+      // Apply suggestion to form
+      window.applySuggestion = function (combo) {
+        arrangementInput.value = combo;
+        updatePreview(combo);
+        arrangementInput.focus();
+      };
+
+      // Generate all possible combinations
+      function generateAllCombinations() {
+        const letters = ["F", "M", "S", "W"];
+        const combinations = [];
+
+        function permute(arr, m = []) {
+          if (arr.length === 0) {
+            combinations.push(m.join(""));
+          } else {
+            for (let i = 0; i < arr.length; i++) {
+              const curr = arr.slice();
+              const next = curr.splice(i, 1);
+              permute(curr.slice(), m.concat(next));
+            }
+          }
+        }
+
+        permute(letters);
+        return combinations;
+      }
+
+      // Check if a combination is valid based on all attempts
+      function isValidCombo(combo) {
+        return attempts.every((attempt) => {
+          const pleased = countCorrectPositions(attempt.arrangement, combo);
+          const incorrect = countIncorrectPositions(
+            attempt.arrangement,
+            combo
+          );
+          const unknown = 4 - pleased - incorrect;
+
+          return (
+            pleased === attempt.pleased &&
+            incorrect === attempt.incorrect &&
+            unknown === attempt.unknown
+          );
+        });
+      }
+
+      // Count correct positions
+      function countCorrectPositions(attempted, actual) {
+        let count = 0;
+        for (let i = 0; i < 4; i++) {
+          if (attempted[i] === actual[i]) count++;
+        }
+        return count;
+      }
+
+      // Count incorrect positions (right offering, wrong spot)
+      function countIncorrectPositions(attempted, actual) {
+        const attemptedCopy = attempted.split("");
+        const actualCopy = actual.split("");
+
+        // Remove correct positions first
+        for (let i = 0; i < 4; i++) {
+          if (attemptedCopy[i] === actualCopy[i]) {
+            attemptedCopy[i] = null;
+            actualCopy[i] = null;
+          }
+        }
+
+        // Count remaining matches
+        let count = 0;
+        for (let i = 0; i < 4; i++) {
+          if (attemptedCopy[i] !== null) {
+            const index = actualCopy.indexOf(attemptedCopy[i]);
+            if (index !== -1) {
+              count++;
+              actualCopy[index] = null;
+            }
+          }
+        }
+
+        return count;
+      }
+
+      // Reset all attempts
+      resetButton.addEventListener("click", () => {
+        if (confirm("Are you sure you want to reset all attempts?")) {
+          attempts = [];
+          localStorage.removeItem("fountainAttempts");
+          renderAttempts();
+          generateSuggestions();
         }
       });
 
-    // Initialize preview on page load
-    updatePreview();
-
-    // Focus on arrangement input field when page loads
-    document.getElementById("arrangement").focus();
-  });
-</script>
+      // Initialize on page load
+      loadAttempts();
+    </script>
+  </body>
+</html>
